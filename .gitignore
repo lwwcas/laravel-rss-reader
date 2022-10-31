@@ -2,4 +2,4 @@ build
 docs
 vendor
 coverage
-.cache
+*.cache
