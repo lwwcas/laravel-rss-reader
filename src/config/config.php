@@ -9,11 +9,14 @@ return [
 
     'config-rss' => [
         'laravel-news' => [
-            'url' => 'https://news.google.com/news/rss',
+            // 'url' => 'https://news.google.com/news/rss',
+            // 'articles' => 'item',
         ]
     ],
 
-    'custom-rss' => [
-        //
-    ],
+    'defaultDateFormat' => 'Y-m-d',
+
+    'defaultArticlesDateFormat' => 'Y-m-d H:i:s',
+
+    'autoUpdateHoursDelay' => '24',
 ];
