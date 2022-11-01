@@ -95,7 +95,7 @@ class RssReader
         return $feed[$setup['core']];
     }
 
-    private function getActiveFeed(string $rssFeed)
+    private function getActiveFeed(string $rssFeed): ?BaseFeed
     {
         $activeRss = $this->config('active-rss');
         $arrayFeedSearch = array_search($rssFeed, $activeRss);
@@ -115,7 +115,7 @@ class RssReader
         return (new $activeRss[$rssFeed]());
     }
 
-    private function getRssClass(string $rssFeed)
+    private function getRssClass(string $rssFeed): BaseFeed
     {
         $namespace = RssReader::NAMESPACE . 'feeds\\';
         $rssClassName = $namespace . str_replace('-', '', ucwords($rssFeed, '-'));
@@ -128,7 +128,7 @@ class RssReader
      *
      * @param $url
      */
-    public function readFromUrl(string $url)
+    public function readFromUrl(string $url): SimpleXMLElement
     {
         $content = @file_get_contents($url);
 
