@@ -1,10 +1,8 @@
 <?php
 
-use Lwwcas\LaravelRssReader\Feeds\LaravelNews;
-
 return [
     'active-rss' => [
-        'laravel-news' => LaravelNews::class,
+        'laravel-news',
     ],
 
     'config-rss' => [

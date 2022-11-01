@@ -7,13 +7,7 @@ use SimpleXMLElement;
 
 class RssReader
 {
-    /**
-     * RssReader constructor.
-     */
-    public function __construct()
-    {
-        //
-    }
+    private const NAMESPACE = 'Lwwcas\LaravelRssReader';
 
     public function feed(string $rssFeed)
     {
@@ -81,12 +75,29 @@ class RssReader
     private function getActiveFeed(string $rssFeed)
     {
         $activeRss = $this->config('active-rss');
+        $arrayFeedSearch = array_search($rssFeed, $activeRss);
 
-        if (array_key_exists($rssFeed, $activeRss) === false) {
+        if (is_array($activeRss) == false) {
             return null;
         }
 
+        if ($arrayFeedSearch === false && array_key_exists($rssFeed, $activeRss) === false) {
+            return null;
+        }
+
+        if ($arrayFeedSearch != false && $activeRss[$arrayFeedSearch] === $rssFeed) {
+            return $this->getRssClass($rssFeed);
+        }
+
         return (new $activeRss[$rssFeed]());
+    }
+
+    private function getRssClass(string $rssFeed)
+    {
+        $namespace = RssReader::NAMESPACE . '\\' . 'feeds\\';
+        $rssClassName = $namespace . str_replace('-', '', ucwords($rssFeed, '-'));
+
+        return (new $rssClassName());
     }
 
     /**
