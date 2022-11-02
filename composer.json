@@ -29,6 +29,8 @@
     ],
     "require": {
         "php": "^7.1|^8.0",
+        "ext-json": "*",
+        "illuminate/database": "^7.0|^8.0|^9.0",
         "illuminate/support": "^7.0|^8.0|^9.0"
     },
     "require-dev": {

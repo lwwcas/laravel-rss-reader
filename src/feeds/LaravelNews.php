@@ -18,24 +18,59 @@ class LaravelNews extends BaseFeed
 
     protected $language = 'en-US';
 
-    protected $setup = [
-        'core' => 'channel',
-        'articles' => 'item',
-        'article' => [
-            'url' => 'link',
-            'title' => 'title',
-            'description' => 'description',
-            'category' => 'category',
-            'date' => 'pubDate',
-            'guid' => 'guid',
+    protected $cache = true;
 
-        ],
-        'image' => 'image',
-        'title' => 'title',
-        'description' => 'description',
-        'url' => 'link',
-        'language' => 'language',
+    protected $autoUpdate = false;
+
+    protected $metadata = [
         'generator' => 'generator',
+        'language' => 'language',
         'lastUpdate' => 'lastBuildDate',
     ];
+
+    protected $setup = [
+        'articles' => 'item',
+        'core' => 'channel',
+        'description' => 'description',
+        'image' => 'image',
+        'title' => 'title',
+        'url' => 'link',
+    ];
+
+    protected $article = [
+        'date' => 'pubDate',
+        'description' => 'description',
+        'image' => null,
+        'title' => 'title',
+        'url' => 'link',
+    ];
+
+    protected $articleData = [
+        'category',
+    ];
+
+    public function feedCreated(array $feed = []): array
+    {
+        foreach ($feed['articles'] as $key => $article) {
+            $description = $article['description'];
+
+            // fetch the first paragraph
+            $start = strpos($description, '<p>');
+            $end = strpos($description, '</p>', $start);
+            $paragraph = substr($description, $start, $end - $start + 4);
+
+            // fetch the img tag
+            $start = strpos($paragraph, '<img src="');
+            $image = substr($paragraph, $start + 10);
+            $image = str_replace('"></a></p>', '', $image);
+
+            // remove the first paragraph from the description
+            $description = substr($description, $end + 4);
+
+            $feed['articles'][$key]['image'] = $image;
+            $feed['articles'][$key]['description'] = $description;
+        }
+
+        return $feed;
+    }
 }

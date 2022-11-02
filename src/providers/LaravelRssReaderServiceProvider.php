@@ -3,7 +3,7 @@
 namespace Lwwcas\LaravelRssReader\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Lwwcas\LaravelRssReader\LaravelRssReader;
+use Lwwcas\LaravelRssReader\RssReader;
 
 class LaravelRssReaderServiceProvider extends ServiceProvider
 {
@@ -18,7 +18,7 @@ class LaravelRssReaderServiceProvider extends ServiceProvider
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-rss-reader');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-rss-reader');
         // $this->loadRoutesFrom(__DIR__.'/routes.php');
-        // $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -65,7 +65,7 @@ class LaravelRssReaderServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('laravel-rss-reader', function () {
-            return new LaravelRssReader();
+            return new RssReader();
         });
     }
 }
