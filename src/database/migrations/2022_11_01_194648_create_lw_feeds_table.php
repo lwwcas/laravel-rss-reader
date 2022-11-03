@@ -15,7 +15,7 @@ return new class () extends Migration {
         Schema::create('lw_feeds', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('name')->nullable()->comment('The name of RSS feed provider');
+            $table->string('title')->nullable()->comment('The name of RSS feed provider');
             $table->string('key')->unique()->index()->comment('The key | id on config file');
             $table->timestamp('read_at')->comment('Last time the original RSS was accessed');
             $table->timestamps();

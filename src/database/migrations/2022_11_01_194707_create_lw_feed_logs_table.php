@@ -16,7 +16,7 @@ return new class () extends Migration {
             $table->id();
             $table->bigInteger('feed_id')->unsigned();
             $table->uuid('uuid');
-            $table->string('name')->nullable();
+            $table->string('title')->nullable();
             $table->string('key');
             $table->string('action');
             $table->timestamp('read_at');
