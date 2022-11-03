@@ -6,15 +6,18 @@ return [
     ],
 
     'config-rss' => [
-        'laravel-news' => [
-            // 'url' => 'https://news.google.com/news/rss',
-            // 'articles' => 'item',
-        ]
+        // 'laravel-news' => [
+        //     // 'url' => 'https://news.google.com/news/rss',
+        // ]
     ],
 
-    'defaultDateFormat' => 'Y-m-d',
+    'hide-articles-on-blacklist' => false,
 
-    'defaultArticlesDateFormat' => 'Y-m-d H:i:s',
+    'save-articles-on-blacklist' => true,
 
-    'autoUpdateHoursDelay' => '24',
+    'auto-update-hours-delay' => '24',
+
+    'default-date-format' => 'Y-m-d',
+
+    'default-articles-date-format' => 'Y-m-d H:i:s',
 ];

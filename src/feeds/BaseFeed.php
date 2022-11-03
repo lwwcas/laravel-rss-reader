@@ -28,6 +28,12 @@ abstract class BaseFeed
 
     protected $articleData = [];
 
+    protected $cache = true;
+
+    protected $autoUpdate = false;
+
+    protected $badWordsVerification = true;
+
     public function id()
     {
         return $this->id;
@@ -133,6 +139,36 @@ abstract class BaseFeed
         return $this->articleData;
     }
 
+    public function sourceCache()
+    {
+        $config = $this->configParameter('cache');
+        if ($config != null) {
+            return $config;
+        }
+
+        return $this->cache;
+    }
+
+    public function sourceAutoUpdate()
+    {
+        $config = $this->configParameter('autoUpdate');
+        if ($config != null) {
+            return $config;
+        }
+
+        return $this->autoUpdate;
+    }
+
+    public function sourceBadWordsVerification()
+    {
+        $config = $this->configParameter('badWordsVerification');
+        if ($config != null) {
+            return $config;
+        }
+
+        return $this->badWordsVerification;
+    }
+
     public function sourceAll()
     {
         return [
@@ -147,17 +183,25 @@ abstract class BaseFeed
             'setup' => $this->sourceSetup(),
             'article' => $this->sourceArticle(),
             'articleData' => $this->sourceArticleData(),
+            'cache' => $this->sourceCache(),
+            'autoUpdate' => $this->sourceArticleData(),
+            'badWordsVerification' => $this->sourceBadWordsVerification(),
         ];
     }
 
-    public function feedCreated(array $feed = [])
+    public function feedCreated(array $feed = []): array
     {
         return $feed;
     }
 
+    public function customFilter(array $feed = []): array
+    {
+        return [];
+    }
+
     public function dateParse(string $date, ?string $format = null)
     {
-        $dateFormat = $format === null ? $this->config('defaultDateFormat') : $format;
+        $dateFormat = $format === null ? $this->config('default-date-format') : $format;
         $date = strtotime($date);
         return date($dateFormat, $date);
     }

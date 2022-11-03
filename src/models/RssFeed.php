@@ -1,12 +1,12 @@
 <?php
 
-namespace Lwwcas\LaravelCountries\Models;
+namespace Lwwcas\LaravelRssReader\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class Feeds extends Model
+class RssFeed extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Feeds extends Model
      *
      * @var string
      */
-    protected $table = 'lw_feed_logs';
+    protected $table = 'lw_feeds';
 
     /**
      * The attributes that are mass assignable.
@@ -24,9 +24,8 @@ class Feeds extends Model
      */
     protected $fillable = [
         'uuid',
-        'name',
+        'title',
         'key',
-        'action',
         'read_at',
     ];
 
@@ -41,5 +40,21 @@ class Feeds extends Model
         self::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
         });
+    }
+
+    /**
+     * Get the articles for the rss feed.
+     */
+    public function articles()
+    {
+        return $this->hasMany(RssFeedArticle::class, 'feed_id');
+    }
+
+    /**
+     * Get the logs for the rss feed.
+     */
+    public function logs()
+    {
+        return $this->hasMany(RssFeedLog::class, 'feed_id');
     }
 }

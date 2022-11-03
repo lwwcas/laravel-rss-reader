@@ -22,6 +22,8 @@ class LaravelNews extends BaseFeed
 
     protected $autoUpdate = false;
 
+    protected $badWordsVerification = true;
+
     protected $metadata = [
         'generator' => 'generator',
         'language' => 'language',
@@ -72,5 +74,10 @@ class LaravelNews extends BaseFeed
         }
 
         return $feed;
+    }
+
+    public function customFilter(array $article = []): array
+    {
+        return [];
     }
 }

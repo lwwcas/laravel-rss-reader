@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace Lwwcas\LaravelRssReader\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Casts\Json;
 
-class FeedLogs extends Model
+class RssFeedArticle extends Model
 {
     use HasFactory;
 
@@ -27,6 +27,7 @@ class FeedLogs extends Model
         'uuid',
         'url',
         'title',
+        'slug',
         'description',
         'image',
         'language',
@@ -34,6 +35,7 @@ class FeedLogs extends Model
         'active',
         'black_list',
         'date',
+        'custom',
     ];
 
     /**
@@ -53,6 +55,7 @@ class FeedLogs extends Model
      */
     protected $casts = [
         'data' => Json::class,
+        'custom' => Json::class,
         'visible' => 'boolean',
         'black_list' => 'boolean',
     ];
@@ -67,6 +70,15 @@ class FeedLogs extends Model
         parent::boot();
         self::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
+            $model->slug = (string) Str::of($model->title)->slug('-');
         });
+    }
+
+    /**
+     * Get the RSS Feed that owns the log.
+     */
+    public function feed()
+    {
+        return $this->belongsTo(RssFeed::class, 'feed_id');
     }
 }

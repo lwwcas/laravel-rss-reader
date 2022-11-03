@@ -19,12 +19,16 @@ return new class () extends Migration {
             $table->uuid('uuid');
             $table->string('url');
             $table->string('title');
+            $table->string('slug')->unique();
             $table->text('description');
             $table->string('image');
             $table->string('language');
             $table->json('data')
                         ->default(new Expression('(JSON_ARRAY())'))
                         ->comment('The extra information of the saved article');
+            $table->json('custom')
+                        ->default(new Expression('(JSON_ARRAY())'))
+                        ->comment('A custom filter for automation or specific searches');
             $table->boolean('active')
                         ->default(true)
                         ->comment('Defines if the article is able to be visible');
