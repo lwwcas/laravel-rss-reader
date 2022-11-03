@@ -2,16 +2,28 @@
 
 namespace Lwwcas\LaravelRssReader;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Feeds\BaseFeed;
+use Lwwcas\LaravelRssReader\Models\RssFeed;
+use Lwwcas\LaravelRssReader\Models\RssFeedLog;
 use SimpleXMLElement;
 
 class RssReader
 {
     private const NAMESPACE = 'Lwwcas\LaravelRssReader\\';
 
-    public function feed(string $rssFeed): array
+    private $rssFeed = null;
+
+    private $rootFeed = [
+        'articles' => [],
+    ];
+
+    public function feed(string $rssFeed): RssReader
     {
+        $this->rssFeed = $rssFeed;
         $rssClass = $this->getActiveFeed($rssFeed);
 
         if ($rssClass === null) {
@@ -19,12 +31,105 @@ class RssReader
         }
 
         $feed = $this->getNormalizeFeed($rssClass);
-        $root = $this->generateRootFeed($rssClass, $feed);
-        $root['articles'] = $this->generateArticlesFeed($rssClass, $feed);
+        $rootFeed = $this->generateRootFeed($rssClass, $feed);
+        $rootFeed['articles'] = $this->generateArticlesFeed($rssClass, $feed);
+        $rootFeed['articles'] = $this->generateCustomFilter($rssClass, $rootFeed['articles']);
 
-        $root = $rssClass->feedCreated($root);
+        $this->rootFeed = $rssClass->feedCreated($rootFeed);
 
-        return $root;
+        return $this;
+    }
+
+    public function save()
+    {
+        if ($this->rssFeed === null) {
+            return null;
+        }
+
+        $rssClass = $this->getActiveFeed($this->rssFeed);
+
+        if ($rssClass->sourceCache() === false) {
+            return null;
+        }
+
+        $articles = $this->rootFeed['articles'];
+
+        $response = DB::transaction(function () use ($rssClass, $articles) {
+            $now = date('Y-m-d H:i:s');
+            $rssFeed = RssFeed::updateOrCreate(
+                [
+                    'key' => $rssClass->id(),
+                ],
+                [
+                    'title' => $rssClass->sourceTitle(),
+                    'key' => $rssClass->id(),
+                    'read_at' => $now,
+                ]
+            );
+
+            $rssFeed->logs()->create([
+                'title' => $rssClass->sourceTitle(),
+                'key' => $rssClass->id(),
+                'action' => RssFeedLog::ACTION_SAVE,
+                'read_at' => $now,
+            ]);
+
+            foreach ($articles as $article) {
+                $slug = Str::of($article['title'])->slug('-');
+                $rssFeed->articles()->updateOrCreate(
+                    [
+                        'slug' => $slug,
+                    ],
+                    [
+                        'url' => $article['url'],
+                        'title' => $article['title'],
+                        'description' => $article['description'],
+                        'image' => $article['image'],
+                        'data' => $article['data'],
+                        'date' => $article['date'],
+                        'custom' => $article['custom_filter'],
+                        'language' => $rssClass->sourceLanguage(),
+                        'active' => true,
+                        'black_list' => false,
+                    ]
+                );
+            }
+
+            return $rssFeed;
+        });
+
+        return $response;
+    }
+
+    public function get(): array
+    {
+        return $this->rootFeed;
+    }
+
+    public function all(): array
+    {
+        return $this->rootFeed['articles'];
+    }
+
+    public function first(callable $callback = null, $default = null): Arr
+    {
+        return Arr::first($this->rootFeed['articles'], $callback, $default);
+    }
+
+    public function last(callable $callback = null, $default = null): Arr
+    {
+        return Arr::last($this->rootFeed['articles'], $callback, $default);
+    }
+
+    public function sort(): RssReader
+    {
+        $this->rootFeed['articles'] = Arr::sort($this->rootFeed['articles']);
+        return $this;
+    }
+
+    private function verifyBannedWords(BaseFeed $rssClass, array $articles): array
+    {
+        return $articles;
     }
 
     private function generateArticlesFeed(BaseFeed $rssClass, array $feed): array
@@ -33,7 +138,7 @@ class RssReader
         $articleData = $rssClass->sourceArticleData();
         $articleSource = $rssClass->sourceArticle();
 
-        $articleDataFormat = $this->config('defaultArticlesDateFormat');
+        $articleDataFormat = $this->config('default-articles-date-format');
         $articles = [];
 
         foreach ($feed[$setup['articles']] as $key => $article) {
@@ -82,6 +187,28 @@ class RssReader
         }
 
         return $root;
+    }
+
+    private function generateCustomFilter(BaseFeed $rssClass, array $articles): array
+    {
+        $_articles = [];
+        foreach ($articles as $article) {
+            $custom = $rssClass->customFilter($article);
+            if ($custom === null) {
+                $article['custom_filter'] = null;
+                continue;
+            }
+
+            if (is_array($custom) === false) {
+                $article['custom_filter'] = null;
+                continue;
+            }
+
+            $article['custom_filter'] = $rssClass->customFilter($article);
+            $_articles[] = $article;
+        }
+
+        return $_articles;
     }
 
     private function getNormalizeFeed(BaseFeed $rssClass): array
@@ -142,7 +269,7 @@ class RssReader
         return $xmlElement;
     }
 
-    public function toArray(SimpleXMLElement $xmlElement = null)
+    private function toArray(SimpleXMLElement $xmlElement = null)
     {
         if (!$xmlElement->children()) {
             return (string) $xmlElement;
