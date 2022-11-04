@@ -39,9 +39,9 @@ abstract class RssReaderBase
 
     protected function generateArticlesFeed(BaseFeed $rssClass, array $feed): array
     {
-        $setup = $rssClass->sourceSetup();
-        $articleData = $rssClass->sourceArticleData();
-        $articleSource = $rssClass->sourceArticle();
+        $setup = $rssClass->setup();
+        $articleData = $rssClass->articleData();
+        $articleSource = $rssClass->article();
 
         $articleDataFormat = $this->config('default-articles-date-format');
         $articles = [];
@@ -91,8 +91,8 @@ abstract class RssReaderBase
 
     protected function generateRootFeed(BaseFeed $rssClass, array $feed): array
     {
-        $setup = $rssClass->sourceSetup();
-        $metadata = $rssClass->sourceMetadata();
+        $setup = $rssClass->setup();
+        $metadata = $rssClass->metadata();
 
         $feedDate = $rssClass->dateParse($feed[$metadata['lastUpdate']]);
 
@@ -118,8 +118,8 @@ abstract class RssReaderBase
 
     protected function getNormalizeFeed(BaseFeed $rssClass): array
     {
-        $url = $rssClass->sourceUrl();
-        $setup = $rssClass->sourceSetup();
+        $url = $rssClass->url();
+        $setup = $rssClass->setup();
 
         $feed = $this->readFromUrl($url);
         $feed = $this->toArray($feed);
@@ -157,7 +157,7 @@ abstract class RssReaderBase
 
     protected function verifyBannedWords(BaseFeed $rssClass, array $articles): array
     {
-        if ($rssClass->sourceBadWordsVerification() === false) {
+        if ($rssClass->badWordsVerification() === false) {
             return $articles;
         }
 

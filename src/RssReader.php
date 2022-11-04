@@ -29,7 +29,7 @@ class RssReader extends RssReaderBase
         return $this;
     }
 
-    public function save()
+    public function save(): RssReader
     {
         if ($this->rssFeed === null) {
             return null;
@@ -37,27 +37,26 @@ class RssReader extends RssReaderBase
 
         $rssClass = $this->getActiveFeed($this->rssFeed);
 
-        if ($rssClass->sourceCache() === false) {
+        if ($rssClass->cache() === false) {
             return null;
         }
 
         $articles = $this->rootFeed['articles'];
-
-        $response = DB::transaction(function () use ($rssClass, $articles) {
+        DB::transaction(function () use ($rssClass, $articles) {
             $now = date('Y-m-d H:i:s');
             $rssFeed = RssFeed::updateOrCreate(
                 [
                     'key' => $rssClass->id(),
                 ],
                 [
-                    'title' => $rssClass->sourceTitle(),
+                    'title' => $rssClass->title(),
                     'key' => $rssClass->id(),
                     'read_at' => $now,
                 ]
             );
 
             $rssFeed->logs()->create([
-                'title' => $rssClass->sourceTitle(),
+                'title' => $rssClass->title(),
                 'key' => $rssClass->id(),
                 'action' => RssFeedLog::ACTION_SAVE,
                 'read_at' => $now,
@@ -77,7 +76,7 @@ class RssReader extends RssReaderBase
                         'data' => $article['data'],
                         'date' => $article['date'],
                         'custom' => $article['custom_filter'],
-                        'language' => $rssClass->sourceLanguage(),
+                        'language' => $rssClass->language(),
                         'active' => true,
                         'black_list' => false,
                     ]
@@ -87,6 +86,6 @@ class RssReader extends RssReaderBase
             return $rssFeed;
         });
 
-        return $response;
+        return $this;
     }
 }

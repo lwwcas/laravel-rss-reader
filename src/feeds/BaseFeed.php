@@ -39,7 +39,7 @@ abstract class BaseFeed
         return $this->id;
     }
 
-    public function sourceGenerator()
+    public function generator()
     {
         $config = $this->configParameter('generator');
         if ($config != null) {
@@ -49,7 +49,7 @@ abstract class BaseFeed
         return $this->generator;
     }
 
-    public function sourceUrl()
+    public function url()
     {
         $config = $this->configParameter('url');
         if ($config != null) {
@@ -59,7 +59,7 @@ abstract class BaseFeed
         return $this->url;
     }
 
-    public function sourceImage()
+    public function image()
     {
         $config = $this->configParameter('image');
         if ($config != null) {
@@ -69,7 +69,7 @@ abstract class BaseFeed
         return $this->image;
     }
 
-    public function sourceTitle()
+    public function title()
     {
         $config = $this->configParameter('title');
         if ($config != null) {
@@ -79,7 +79,7 @@ abstract class BaseFeed
         return $this->title;
     }
 
-    public function sourceDescription()
+    public function description()
     {
         $config = $this->configParameter('description');
         if ($config != null) {
@@ -89,7 +89,7 @@ abstract class BaseFeed
         return $this->description;
     }
 
-    public function sourceLanguage()
+    public function language()
     {
         $config = $this->configParameter('language');
         if ($config != null) {
@@ -99,7 +99,7 @@ abstract class BaseFeed
         return $this->language;
     }
 
-    public function sourceMetadata()
+    public function metadata()
     {
         $config = $this->configParameter('metadata');
         if ($config != null) {
@@ -109,7 +109,7 @@ abstract class BaseFeed
         return $this->metadata;
     }
 
-    public function sourceSetup()
+    public function setup()
     {
         $config = $this->configParameter('setup');
         if ($config != null) {
@@ -119,7 +119,7 @@ abstract class BaseFeed
         return $this->setup;
     }
 
-    public function sourceArticle()
+    public function article()
     {
         $config = $this->configParameter('article');
         if ($config != null) {
@@ -129,7 +129,7 @@ abstract class BaseFeed
         return $this->article;
     }
 
-    public function sourceArticleData()
+    public function articleData()
     {
         $config = $this->configParameter('articleData');
         if ($config != null) {
@@ -139,7 +139,7 @@ abstract class BaseFeed
         return $this->articleData;
     }
 
-    public function sourceCache()
+    public function cache()
     {
         $config = $this->configParameter('cache');
         if ($config != null) {
@@ -149,7 +149,7 @@ abstract class BaseFeed
         return $this->cache;
     }
 
-    public function sourceAutoUpdate()
+    public function autoUpdate()
     {
         $config = $this->configParameter('autoUpdate');
         if ($config != null) {
@@ -159,7 +159,7 @@ abstract class BaseFeed
         return $this->autoUpdate;
     }
 
-    public function sourceBadWordsVerification()
+    public function badWordsVerification()
     {
         $config = $this->configParameter('badWordsVerification');
         if ($config != null) {
@@ -169,23 +169,23 @@ abstract class BaseFeed
         return $this->badWordsVerification;
     }
 
-    public function sourceAll()
+    public function all()
     {
         return [
             'id' => $this->id(),
-            'generator' => $this->sourceGenerator(),
-            'url' => $this->sourceUrl(),
-            'image' => $this->sourceImage(),
-            'title' => $this->sourceTitle(),
-            'description' => $this->sourceDescription(),
-            'language' => $this->sourceLanguage(),
-            'metadata' => $this->sourceMetadata(),
-            'setup' => $this->sourceSetup(),
-            'article' => $this->sourceArticle(),
-            'articleData' => $this->sourceArticleData(),
-            'cache' => $this->sourceCache(),
-            'autoUpdate' => $this->sourceArticleData(),
-            'badWordsVerification' => $this->sourceBadWordsVerification(),
+            'generator' => $this->generator(),
+            'url' => $this->url(),
+            'image' => $this->image(),
+            'title' => $this->title(),
+            'description' => $this->Description(),
+            'language' => $this->language(),
+            'metadata' => $this->metadata(),
+            'setup' => $this->setup(),
+            'article' => $this->article(),
+            'articleData' => $this->articleData(),
+            'cache' => $this->cache(),
+            'autoUpdate' => $this->autoUpdate(),
+            'badWordsVerification' => $this->badWordsVerification(),
         ];
     }
 
