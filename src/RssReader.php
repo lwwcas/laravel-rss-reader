@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Lwwcas\LaravelRssReader\Badwords\BadWord;
 use Lwwcas\LaravelRssReader\Feeds\BaseFeed;
 use Lwwcas\LaravelRssReader\Models\RssFeed;
 use Lwwcas\LaravelRssReader\Models\RssFeedLog;
@@ -36,6 +37,8 @@ class RssReader
         $rootFeed['articles'] = $this->generateCustomFilter($rssClass, $rootFeed['articles']);
 
         $this->rootFeed = $rssClass->feedCreated($rootFeed);
+
+        $this->rootFeed['articles'] = $this->verifyBannedWords($rssClass, $rootFeed['articles']);
 
         return $this;
     }
@@ -123,7 +126,23 @@ class RssReader
 
     private function verifyBannedWords(BaseFeed $rssClass, array $articles): array
     {
-        return $articles;
+        if ($rssClass->sourceBadWordsVerification() === false) {
+            return $articles;
+        }
+
+        $_articles = [];
+
+        foreach ($articles as $article) {
+            $description = $article['description'];
+            $verification = BadWord::verifyParagraph($description);
+            $article['black-list'] = [
+                'status' => $verification['black-list'],
+                'bad-words' => $verification['words'],
+            ];
+            $_articles[] = $article;
+        }
+
+        return $_articles;
     }
 
     private function generateArticlesFeed(BaseFeed $rssClass, array $feed): array
