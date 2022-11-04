@@ -103,12 +103,12 @@ class RssReader
 
     public function get(): array
     {
-        return $this->rootFeed;
+        return $this->rootFeed['articles'];
     }
 
     public function all(): array
     {
-        return $this->rootFeed['articles'];
+        return $this->rootFeed;
     }
 
     public function first(callable $callback = null, $default = null): Arr
