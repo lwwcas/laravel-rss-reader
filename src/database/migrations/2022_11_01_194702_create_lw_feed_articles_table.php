@@ -21,7 +21,7 @@ return new class () extends Migration {
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('language');
             $table->json('data')
                         ->default(new Expression('(JSON_ARRAY())'))
