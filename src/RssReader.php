@@ -111,20 +111,14 @@ class RssReader
         return $this->rootFeed;
     }
 
-    public function first(callable $callback = null, $default = null): Arr
+    public function first(callable $callback = null, $default = null): array
     {
         return Arr::first($this->rootFeed['articles'], $callback, $default);
     }
 
-    public function last(callable $callback = null, $default = null): Arr
+    public function last(callable $callback = null, $default = null): array
     {
         return Arr::last($this->rootFeed['articles'], $callback, $default);
-    }
-
-    public function sort(): RssReader
-    {
-        $this->rootFeed['articles'] = Arr::sort($this->rootFeed['articles']);
-        return $this;
     }
 
     private function verifyBannedWords(BaseFeed $rssClass, array $articles): array
