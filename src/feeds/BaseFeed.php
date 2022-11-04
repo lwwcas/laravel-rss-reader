@@ -30,7 +30,7 @@ abstract class BaseFeed
 
     protected $cache = true;
 
-    protected $autoUpdate = false;
+    protected $autoUpdate = true;
 
     protected $badWordsVerification = true;
 
