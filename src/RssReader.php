@@ -14,7 +14,7 @@ use SimpleXMLElement;
 
 class RssReader
 {
-    private const NAMESPACE = 'Lwwcas\LaravelRssReader\\';
+    private const NAMESPACE = 'Lwwcas\\LaravelRssReader\\';
 
     private $rssFeed = null;
 

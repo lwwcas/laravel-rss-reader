@@ -40,12 +40,14 @@
     "autoload": {
         "psr-4": {
             "Lwwcas\\LaravelRssReader\\": "src",
-            "Lwwcas\\LaravelRssReader\\Providers\\": "src/providers",
-            "Lwwcas\\LaravelRssReader\\Models\\": "src/models",
+            "Lwwcas\\LaravelRssReader\\BadWords\\": "src/badwords",
             "Lwwcas\\LaravelRssReader\\Casts\\": "src/casts",
             "Lwwcas\\LaravelRssReader\\Database\\": "src/database",
             "Lwwcas\\LaravelRssReader\\Database\\Seeders\\": "src/database/seeders",
-            "Lwwcas\\LaravelRssReader\\Database\\Seeders\\Countries\\": "src/database/seeders/countries"
+            "Lwwcas\\LaravelRssReader\\Database\\Seeders\\Countries\\": "src/database/seeders/countries",
+            "Lwwcas\\LaravelRssReader\\Feeds\\": "src/feeds",
+            "Lwwcas\\LaravelRssReader\\Models\\": "src/models",
+            "Lwwcas\\LaravelRssReader\\Providers\\": "src/providers"
         }
     },
     "autoload-dev": {

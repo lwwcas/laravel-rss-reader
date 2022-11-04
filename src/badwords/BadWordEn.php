@@ -1,6 +1,6 @@
 <?php
 
-namespace Lwwcas\LaravelRssReader\Badwords;
+namespace Lwwcas\LaravelRssReader\BadWords;
 
 /*
 |
