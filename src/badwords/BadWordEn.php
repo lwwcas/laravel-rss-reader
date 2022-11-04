@@ -1,5 +1,7 @@
 <?php
 
+namespace Lwwcas\LaravelRssReader\Badwords;
+
 /*
 |
 |--------------------------------------------------------------------------
@@ -20,8 +22,15 @@
 |
 |
 */
-if (!function_exists('get_bad_words_en')) {
-    function get_bad_words_en()
+
+trait BadWordEn
+{
+    /**
+     * List of Bad Words
+     *
+     * @return array
+     */
+    private static function enWords()
     {
         return [
             '2 girls 1 cup',
