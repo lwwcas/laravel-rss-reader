@@ -21,7 +21,7 @@ return new class () extends Migration {
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('description');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('language');
             $table->json('data')
                         ->default(new Expression('(JSON_ARRAY())'))
@@ -35,6 +35,9 @@ return new class () extends Migration {
             $table->boolean('black_list')
                         ->default(false)
                         ->comment('The article is blacklisted if there are offensive words');
+            $table->json('bad_words')
+                    ->default(new Expression('(JSON_ARRAY())'))
+                    ->comment('If it\'s on the blacklist, it will list the bad words');
             $table->timestamp('date')->nullable();
             $table->timestamps();
 
