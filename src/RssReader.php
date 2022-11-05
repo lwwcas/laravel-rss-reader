@@ -4,10 +4,11 @@ namespace Lwwcas\LaravelRssReader;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Lwwcas\LaravelRssReader\Abstract\BaseRssReader;
 use Lwwcas\LaravelRssReader\Models\RssFeed;
 use Lwwcas\LaravelRssReader\Models\RssFeedLog;
 
-class RssReader extends RssReaderBase
+class RssReader extends BaseRssReader
 {
     public function feed(string $rssFeed): RssReader
     {
