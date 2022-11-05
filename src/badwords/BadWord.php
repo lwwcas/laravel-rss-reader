@@ -2,6 +2,8 @@
 
 namespace Lwwcas\LaravelRssReader\BadWords;
 
+use Lwwcas\LaravelRssReader\BadWords\Concerns\BadWordEn;
+
 class BadWord
 {
     use BadWordEn;
