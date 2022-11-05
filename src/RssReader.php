@@ -63,6 +63,23 @@ class RssReader extends RssReaderBase
             ]);
 
             foreach ($articles as $article) {
+                $saveArticlesOnBlackList = $this->saveArticlesOnBlackList($article);
+                if ($saveArticlesOnBlackList === false) {
+                    continue;
+                }
+
+                $isActive = true;
+                $hideArticlesOnBlackList = $this->hideArticlesOnBlackList($article);
+                if ($hideArticlesOnBlackList === true) {
+                    $isActive = false;
+                }
+
+                $isOnBlackList = $this->isOnBlacklist($article);
+                $badWords = [];
+                if ($isOnBlackList === true) {
+                    $badWords = $article['black-list']['words'];
+                }
+
                 $slug = Str::of($article['title'])->slug('-');
                 $rssFeed->articles()->updateOrCreate(
                     [
@@ -77,8 +94,9 @@ class RssReader extends RssReaderBase
                         'date' => $article['date'],
                         'custom' => $article['custom_filter'],
                         'language' => $rssClass->language(),
-                        'active' => true,
-                        'black_list' => false,
+                        'active' => $isActive,
+                        'black_list' => $isOnBlackList,
+                        'bad_words' => $badWords,
                     ]
                 );
             }
