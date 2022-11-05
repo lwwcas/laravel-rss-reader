@@ -3,7 +3,6 @@
 namespace Lwwcas\LaravelRssReader\Abstract;
 
 use Illuminate\Support\Arr;
-use Lwwcas\LaravelRssReader\BadWords\BadWord;
 use Lwwcas\LaravelRssReader\Concerns\BlackList;
 use Lwwcas\LaravelRssReader\Concerns\BuildFeed;
 use Lwwcas\LaravelRssReader\Concerns\ConfigFeed;
@@ -40,6 +39,26 @@ abstract class BaseRssReader
         return $xmlElement;
     }
 
+    public function all(): array
+    {
+        return $this->rootFeed;
+    }
+
+    public function get(): array
+    {
+        return $this->rootFeed['articles'];
+    }
+
+    public function first(callable $callback = null, $default = null): array
+    {
+        return Arr::first($this->rootFeed['articles'], $callback, $default);
+    }
+
+    public function last(callable $callback = null, $default = null): array
+    {
+        return Arr::last($this->rootFeed['articles'], $callback, $default);
+    }
+
     protected function getNormalizeFeed(BaseFeed $rssClass): array
     {
         $url = $rssClass->url();
@@ -69,26 +88,6 @@ abstract class BaseRssReader
         }
 
         return (new $activeRss[$rssFeed]());
-    }
-
-    public function all(): array
-    {
-        return $this->rootFeed;
-    }
-
-    public function get(): array
-    {
-        return $this->rootFeed['articles'];
-    }
-
-    public function first(callable $callback = null, $default = null): array
-    {
-        return Arr::first($this->rootFeed['articles'], $callback, $default);
-    }
-
-    public function last(callable $callback = null, $default = null): array
-    {
-        return Arr::last($this->rootFeed['articles'], $callback, $default);
     }
 
     protected function toArray(SimpleXMLElement $xmlElement = null)
