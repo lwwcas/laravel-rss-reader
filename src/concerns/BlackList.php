@@ -2,6 +2,9 @@
 
 namespace Lwwcas\LaravelRssReader\Concerns;
 
+use Lwwcas\LaravelRssReader\Abstract\BaseFeed;
+use Lwwcas\LaravelRssReader\BadWords\BadWord;
+
 trait BlackList
 {
     use ConfigFeed;
@@ -38,5 +41,26 @@ trait BlackList
         }
 
         return true;
+    }
+
+    protected function verifyBannedWords(BaseFeed $rssClass, array $articles): array
+    {
+        if ($rssClass->badWordsVerification() === false) {
+            return $articles;
+        }
+
+        $_articles = [];
+
+        foreach ($articles as $article) {
+            $description = $article['description'];
+            $verification = BadWord::verifyParagraph($description);
+            $article['black-list'] = [
+                'status' => $verification['black-list'],
+                'bad-words' => $verification['words'],
+            ];
+            $_articles[] = $article;
+        }
+
+        return $_articles;
     }
 }
