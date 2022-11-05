@@ -1,15 +1,18 @@
 <?php
 
-namespace Lwwcas\LaravelRssReader;
+namespace Lwwcas\LaravelRssReader\Abstract;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Config;
 use Lwwcas\LaravelRssReader\BadWords\BadWord;
-use Lwwcas\LaravelRssReader\Feeds\BaseFeed;
+use Lwwcas\LaravelRssReader\Concerns\BlackList;
+use Lwwcas\LaravelRssReader\Concerns\ConfigFeed;
 use SimpleXMLElement;
 
-abstract class RssReaderBase
+abstract class BaseRssReader
 {
+    use ConfigFeed;
+    use BlackList;
+
     protected const NAMESPACE = 'Lwwcas\\LaravelRssReader\\';
 
     protected $rssFeed = null;
@@ -196,40 +199,6 @@ abstract class RssReaderBase
         return Arr::last($this->rootFeed['articles'], $callback, $default);
     }
 
-    protected function isOnBlacklist(array $article): bool
-    {
-        $isBlackList = @$article['black-list']['status'];
-        if ($isBlackList === null || $isBlackList === false) {
-            return false;
-        }
-
-        return true;
-    }
-
-    protected function hideArticlesOnBlackList(array $article): bool
-    {
-        $isBlackList = $this->isOnBlacklist($article);
-        $hideArticlesOnBlackList = $this->config('hide-articles-on-blacklist');
-
-        if ($isBlackList === true && $hideArticlesOnBlackList === true) {
-            return true;
-        }
-
-        return false;
-    }
-
-    protected function saveArticlesOnBlackList(array $article): bool
-    {
-        $isBlackList = $this->isOnBlacklist($article);
-        $saveArticlesOnBlackList = $this->config('save-articles-on-blacklist');
-
-        if ($isBlackList === true && $saveArticlesOnBlackList === false) {
-            return false;
-        }
-
-        return true;
-    }
-
     protected function toArray(SimpleXMLElement $xmlElement = null)
     {
         if (!$xmlElement->children()) {
@@ -246,18 +215,5 @@ abstract class RssReaderBase
         }
 
         return $xmlArray;
-    }
-
-    /**
-     * Used internally in order to retrieve a specific value from the
-     * configuration file.
-     *
-     * @param string $configuration The name of the configuration to use
-     *
-     * @return mixed
-     */
-    protected function config($configuration)
-    {
-        return Config::get('laravel-rss-reader.' . $configuration);
     }
 }
