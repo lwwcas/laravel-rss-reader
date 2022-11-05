@@ -47,6 +47,7 @@
             "Lwwcas\\LaravelRssReader\\Database\\Seeders\\Countries\\": "src/database/seeders/countries",
             "Lwwcas\\LaravelRssReader\\Feeds\\": "src/feeds",
             "Lwwcas\\LaravelRssReader\\Models\\": "src/models",
+            "Lwwcas\\LaravelRssReader\\Contracts\\": "src/contracts",
             "Lwwcas\\LaravelRssReader\\Providers\\": "src/providers"
         }
     },
