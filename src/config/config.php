@@ -11,6 +11,8 @@ return [
         // ]
     ],
 
+    'article-reading-limit' => 20,
+
     'hide-articles-on-blacklist' => false,
 
     'save-articles-on-blacklist' => true,
