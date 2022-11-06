@@ -7,11 +7,17 @@ use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Abstract\BaseRssReader;
 use Lwwcas\LaravelRssReader\Concerns\CustomFilter;
 use Lwwcas\LaravelRssReader\Models\RssFeed;
+use Lwwcas\LaravelRssReader\Models\RssFeedArticle;
 use Lwwcas\LaravelRssReader\Models\RssFeedLog;
 
 class RssReader extends BaseRssReader
 {
     use CustomFilter;
+
+    public function read(string $rssFeed)
+    {
+        return (new RssFeedArticle())->read($rssFeed);
+    }
 
     public function feed(string $rssFeed): RssReader
     {
