@@ -130,7 +130,31 @@ class RssFeedArticle extends Model
             ->addSeconds(59)
             ->format($this->defaultArticlesDateFormat);
 
-        $this->feedQuery = $this->whereBetween('date', [$yesterday, $endDay]);
+        $this->feedQuery = $this->betweenDate($yesterday, $endDay);
+        return $this;
+    }
+
+    public function lastWeek()
+    {
+        $lastWeek = Carbon::now()
+            ->startOfDay()
+            ->subDays(7)
+            ->format($this->defaultArticlesDateFormat);
+
+        $endWeek = Carbon::now()
+            ->startOfDay()
+            ->addHours(23)
+            ->addMinutes(59)
+            ->addSeconds(59)
+            ->format($this->defaultArticlesDateFormat);
+
+        $this->feedQuery = $this->betweenDate($lastWeek, $endWeek);
+        return $this;
+    }
+
+    public function betweenDate(string $start, string $end)
+    {
+        $this->feedQuery = $this->whereBetween('date', [$start, $end]);
         return $this;
     }
 
