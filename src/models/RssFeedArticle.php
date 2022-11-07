@@ -27,8 +27,6 @@ class RssFeedArticle extends Model
 
     public $feedQuery = null;
 
-    public $rssFeedIdCached = true;
-
     /**
      * The table associated with the model.
      *
@@ -161,9 +159,10 @@ class RssFeedArticle extends Model
     protected function getRssFeedId(string $feedKey)
     {
         $this->feedKey = $feedKey;
+        $enableCacheRssFeedId = $this->config('enable-caching-in-rss-feed-id');
         $cacheKey = 'lw-rss-feed-' . $feedKey . '-id';
 
-        if (Cache::has($cacheKey) === true && $this->rssFeedIdCached === true) {
+        if (Cache::has($cacheKey) === true && $enableCacheRssFeedId === true) {
             return Cache::get($cacheKey);
         }
 
@@ -177,7 +176,7 @@ class RssFeedArticle extends Model
 
         $rssFeedId = $rssFeed->id;
 
-        if (Cache::has($cacheKey) === false && $this->rssFeedIdCached === true) {
+        if (Cache::has($cacheKey) === false && $enableCacheRssFeedId === true) {
             Cache::put($cacheKey, $rssFeedId, Carbon::now()->addDays(15));
             return $rssFeedId;
         }
