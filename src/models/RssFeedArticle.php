@@ -126,11 +126,8 @@ class RssFeedArticle extends Model
     {
         $yesterday = Carbon::yesterday()
             ->format($this->defaultArticlesDateFormat);
-        $endDay = Carbon::yesterday()
-            ->addHours(23)
-            ->addMinutes(59)
-            ->addSeconds(59)
-            ->format($this->defaultArticlesDateFormat);
+
+        $endDay = $this->endOfDay();
 
         $this->feedQuery = $this->betweenDate($yesterday, $endDay);
         return $this;
@@ -138,19 +135,76 @@ class RssFeedArticle extends Model
 
     public function lastWeek()
     {
-        $lastWeek = Carbon::now()
-            ->startOfDay()
-            ->subDays(7)
-            ->format($this->defaultArticlesDateFormat);
-
-        $endWeek = Carbon::now()
-            ->startOfDay()
-            ->addHours(23)
-            ->addMinutes(59)
-            ->addSeconds(59)
-            ->format($this->defaultArticlesDateFormat);
+        $lastWeek = $this->lastDays(7);
+        $endWeek = $this->endOfDay();
 
         $this->feedQuery = $this->betweenDate($lastWeek, $endWeek);
+        return $this;
+    }
+
+    public function lastThreeDays()
+    {
+        $startDate = $this->lastDays(3);
+        $endDate = $this->endOfDay();
+
+        $this->feedQuery = $this->betweenDate($startDate, $endDate);
+        return $this;
+    }
+
+    public function lastFiveDays()
+    {
+        $startDate = $this->lastDays(5);
+        $endDate = $this->endOfDay();
+
+        $this->feedQuery = $this->betweenDate($startDate, $endDate);
+        return $this;
+    }
+
+    public function lastTenDays()
+    {
+        $startDate = $this->lastDays(10);
+        $endDate = $this->endOfDay();
+
+        $this->feedQuery = $this->betweenDate($startDate, $endDate);
+        return $this;
+    }
+
+    public function lastFifteenDays()
+    {
+        $startDate = $this->lastDays(15);
+        $endDate = $this->endOfDay();
+
+        $this->feedQuery = $this->betweenDate($startDate, $endDate);
+        return $this;
+    }
+
+    public function currentMonth()
+    {
+        $startMonth = Carbon::now()
+            ->startOfMonth()
+            ->format($this->defaultArticlesDateFormat);
+
+        $endMonth = Carbon::now()
+            ->endOfMonth()
+            ->format($this->defaultArticlesDateFormat);
+
+        $this->feedQuery = $this->betweenDate($startMonth, $endMonth);
+        return $this;
+    }
+
+    public function lastMonth()
+    {
+        $startMonth = Carbon::now()
+            ->startOfMonth()
+            ->subMonth()
+            ->format($this->defaultArticlesDateFormat);
+
+        $endMonth = Carbon::now()
+            ->subMonth()
+            ->endOfMonth()
+            ->format($this->defaultArticlesDateFormat);
+
+        $this->feedQuery = $this->betweenDate($startMonth, $endMonth);
         return $this;
     }
 
@@ -158,6 +212,21 @@ class RssFeedArticle extends Model
     {
         $this->feedQuery = $this->whereBetween('date', [$start, $end]);
         return $this;
+    }
+
+    public function lastDays(int $days)
+    {
+        return Carbon::now()
+            ->startOfDay()
+            ->subDays($days)
+            ->format($this->defaultArticlesDateFormat);
+    }
+
+    public function endOfDay()
+    {
+        return Carbon::now()
+            ->endOfDay()
+            ->format($this->defaultArticlesDateFormat);
     }
 
     protected function getRssFeedId(string $feedKey)
