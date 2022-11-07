@@ -19,6 +19,8 @@ class RssFeedArticle extends Model
 
     public $defaultArticlesDateFormat = null;
 
+    public $enableCacheRssFeedId = true;
+
     public $feedKey = null;
 
     public $onBlackList = true;
@@ -80,9 +82,11 @@ class RssFeedArticle extends Model
     {
         $_readingLimit = $this->config('article-reading-limit');
         $_defaultArticlesDateFormat = $this->config('default-articles-date-format');
+        $_enableCacheRssFeedId = $this->config('enable-caching-in-rss-feed-id');
 
         $this->readingLimit = $_readingLimit;
         $this->defaultArticlesDateFormat = $_defaultArticlesDateFormat;
+        $this->enableCacheRssFeedId = $_enableCacheRssFeedId;
         $this->feedQuery = $this;
     }
 
@@ -159,7 +163,7 @@ class RssFeedArticle extends Model
     protected function getRssFeedId(string $feedKey)
     {
         $this->feedKey = $feedKey;
-        $enableCacheRssFeedId = $this->config('enable-caching-in-rss-feed-id');
+        $enableCacheRssFeedId = $this->enableCacheRssFeedId;
         $cacheKey = 'lw-rss-feed-' . $feedKey . '-id';
 
         if (Cache::has($cacheKey) === true && $enableCacheRssFeedId === true) {
