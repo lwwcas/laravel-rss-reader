@@ -1,9 +1,14 @@
 <?php
 
-namespace Lwwcas\LaravelRssReader\Feeds;
+namespace Lwwcas\LaravelRssReader\Abstract;
+
+use Lwwcas\LaravelRssReader\Concerns\ConfigFeed;
+use Lwwcas\LaravelRssReader\Contracts\ConfigableFeed;
 
 abstract class BaseFeed extends BaseConfigsFeed implements ConfigableFeed
 {
+    use ConfigFeed;
+
     protected $id = null;
 
     protected $generator = null;

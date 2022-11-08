@@ -1,6 +1,6 @@
 <?php
 
-namespace Lwwcas\LaravelRssReader\Feeds;
+namespace Lwwcas\LaravelRssReader\Contracts;
 
 interface ConfigableFeed
 {

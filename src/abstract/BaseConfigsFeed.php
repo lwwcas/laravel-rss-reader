@@ -1,11 +1,13 @@
 <?php
 
-namespace Lwwcas\LaravelRssReader\Feeds;
+namespace Lwwcas\LaravelRssReader\Abstract;
 
-use Illuminate\Support\Facades\Config;
+use Lwwcas\LaravelRssReader\Concerns\ConfigFeed;
 
 abstract class BaseConfigsFeed
 {
+    use ConfigFeed;
+
     public function id()
     {
         return $this->id;
@@ -171,10 +173,5 @@ abstract class BaseConfigsFeed
         }
 
         return $config;
-    }
-
-    protected function config(string $config)
-    {
-        return Config::get('laravel-rss-reader.' . $config);
     }
 }

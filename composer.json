@@ -40,8 +40,11 @@
     "autoload": {
         "psr-4": {
             "Lwwcas\\LaravelRssReader\\": "src",
+            "Lwwcas\\LaravelRssReader\\Abstract\\": "src/abstract",
             "Lwwcas\\LaravelRssReader\\BadWords\\": "src/badwords",
             "Lwwcas\\LaravelRssReader\\Casts\\": "src/casts",
+            "Lwwcas\\LaravelRssReader\\Concerns\\": "src/concerns",
+            "Lwwcas\\LaravelRssReader\\Contracts\\": "src/contracts",
             "Lwwcas\\LaravelRssReader\\Database\\": "src/database",
             "Lwwcas\\LaravelRssReader\\Database\\Seeders\\": "src/database/seeders",
             "Lwwcas\\LaravelRssReader\\Database\\Seeders\\Countries\\": "src/database/seeders/countries",

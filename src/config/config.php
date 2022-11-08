@@ -11,6 +11,10 @@ return [
         // ]
     ],
 
+    'article-reading-limit' => 20,
+
+    'enable-caching-in-rss-feed-id' => true,
+
     'hide-articles-on-blacklist' => false,
 
     'save-articles-on-blacklist' => true,

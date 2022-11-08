@@ -4,11 +4,21 @@ namespace Lwwcas\LaravelRssReader;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Lwwcas\LaravelRssReader\Abstract\BaseRssReader;
+use Lwwcas\LaravelRssReader\Concerns\CustomFilter;
 use Lwwcas\LaravelRssReader\Models\RssFeed;
+use Lwwcas\LaravelRssReader\Models\RssFeedArticle;
 use Lwwcas\LaravelRssReader\Models\RssFeedLog;
 
-class RssReader extends RssReaderBase
+class RssReader extends BaseRssReader
 {
+    use CustomFilter;
+
+    public function read(string $rssFeed)
+    {
+        return (new RssFeedArticle())->read($rssFeed);
+    }
+
     public function feed(string $rssFeed): RssReader
     {
         $this->rssFeed = $rssFeed;
@@ -19,9 +29,9 @@ class RssReader extends RssReaderBase
         }
 
         $feed = $this->getNormalizeFeed($rssClass);
-        $rootFeed = $this->generateRootFeed($rssClass, $feed);
-        $rootFeed['articles'] = $this->generateArticlesFeed($rssClass, $feed);
-        $rootFeed['articles'] = $this->generateCustomFilter($rssClass, $rootFeed['articles']);
+        $rootFeed = $this->buildRootFeed($rssClass, $feed);
+        $rootFeed['articles'] = $this->buildArticlesFeed($rssClass, $feed);
+        $rootFeed['articles'] = $this->buildCustomFilter($rssClass, $rootFeed['articles']);
 
         $this->rootFeed = $rssClass->feedCreated($rootFeed);
         $this->rootFeed['articles'] = $this->verifyBannedWords($rssClass, $this->rootFeed['articles']);

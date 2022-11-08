@@ -2,6 +2,8 @@
 
 namespace Lwwcas\LaravelRssReader\Feeds;
 
+use Lwwcas\LaravelRssReader\Abstract\BaseFeed;
+
 class LaravelNews extends BaseFeed
 {
     protected $id = 'laravel-news';
