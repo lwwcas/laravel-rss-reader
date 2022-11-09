@@ -62,23 +62,6 @@ trait DatesFeed
         return $this;
     }
 
-    public function ofYear(int $year = null)
-    {
-        if ($year === null) {
-            $year = Carbon::now()->format('Y');
-        }
-
-        $startYear = Carbon::parse($year . '/01/01')
-            ->format($this->defaultArticlesDateFormat);
-
-        $endYear = Carbon::parse($year . '/12/31')
-            ->endOfMonth()
-            ->format($this->defaultArticlesDateFormat);
-
-        $this->feedQuery = $this->betweenDate($startYear, $endYear);
-        return $this;
-    }
-
     public function ofMonth(int $month, int $year = null)
     {
         if ($year === null) {
@@ -124,6 +107,23 @@ trait DatesFeed
             ->format($this->defaultArticlesDateFormat);
 
         $this->feedQuery = $this->betweenDate($startMonth, $endMonth);
+        return $this;
+    }
+
+    public function ofYear(int $year = null)
+    {
+        if ($year === null) {
+            $year = Carbon::now()->format('Y');
+        }
+
+        $startYear = Carbon::parse($year . '/01/01')
+        ->format($this->defaultArticlesDateFormat);
+
+        $endYear = Carbon::parse($year . '/12/31')
+        ->endOfMonth()
+            ->format($this->defaultArticlesDateFormat);
+
+        $this->feedQuery = $this->betweenDate($startYear, $endYear);
         return $this;
     }
 
