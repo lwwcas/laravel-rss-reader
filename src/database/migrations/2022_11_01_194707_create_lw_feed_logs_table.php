@@ -19,7 +19,7 @@ return new class () extends Migration {
             $table->string('title')->nullable();
             $table->string('key');
             $table->string('action');
-            $table->timestamp('read_at');
+            $table->timestamp('date');
             $table->timestamps();
 
             $table->foreign('feed_id')->references('id')->on('lw_feeds')->onDelete('cascade');
