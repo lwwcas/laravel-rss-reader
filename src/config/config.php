@@ -6,9 +6,9 @@ return [
     ],
 
     'config-rss' => [
-        // 'laravel-news' => [
-        //     // 'url' => 'https://news.google.com/news/rss',
-        // ]
+        'laravel-news' => [
+             // 'url' => 'https://news.google.com/news/rss',
+        ]
     ],
 
     'article-reading-limit' => 20,
