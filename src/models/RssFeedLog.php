@@ -32,7 +32,7 @@ class RssFeedLog extends Model
         'title',
         'key',
         'action',
-        'read_at',
+        'date',
     ];
 
     /**

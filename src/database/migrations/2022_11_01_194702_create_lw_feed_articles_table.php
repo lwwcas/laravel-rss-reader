@@ -37,7 +37,8 @@ return new class () extends Migration {
                         ->comment('The article is blacklisted if there are offensive words');
             $table->json('bad_words')
                     ->default(new Expression('(JSON_ARRAY())'))
-                    ->comment('If it\'s on the blacklist, it will list the bad words');
+                    ->comment('If it\'s on the blacklist, it will list the bad words')
+                    ->nullable();
             $table->timestamp('date')->nullable();
             $table->timestamps();
 
