@@ -126,6 +126,26 @@ class RssFeedArticle extends Model
         return $this;
     }
 
+    public function scopeWhereUuid($query, string $uuid)
+    {
+        return $query->where('uuid', $uuid);
+    }
+
+    public function scopeWhereUrl($query, string $url)
+    {
+        return $query->where('url', $url);
+    }
+
+    public function scopeWhereTitle($query, string $title)
+    {
+        return $query->where('title', $title);
+    }
+
+    public function scopeWhereSlug($query, string $slug)
+    {
+        return $query->where('slug', $slug);
+    }
+
     public function isActive(): bool
     {
         $query = $this->select('active')->first();
