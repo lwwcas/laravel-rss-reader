@@ -122,6 +122,16 @@ class RssFeedArticle extends Model
         return $this;
     }
 
+    public function active()
+    {
+        $this->update(['active' => true]);
+    }
+
+    public function disable()
+    {
+        $this->update(['active' => false]);
+    }
+
     protected function getRssFeedId(string $feedKey)
     {
         $this->feedKey = $feedKey;
