@@ -4,6 +4,44 @@ namespace Lwwcas\LaravelRssReader\Concerns;
 
 trait HasBlacklist
 {
+    public function isOnBlacklist(): bool
+    {
+        $query = $this->select('black_list')->first();
+        if ($query === null) {
+            return false;
+        }
+
+        return (bool) $query->black_list;
+    }
+
+    public function addOnBlacklist()
+    {
+        return $this->update(['black_list' => true]);
+    }
+
+    public function removeOfBlacklist()
+    {
+        return \Illuminate\Support\Facades\DB::transaction(function () {
+            $this->update(['black_list' => false]);
+            $this->update(['bad_words' => []]);
+        });
+    }
+
+    public function hasBadWords(): bool
+    {
+        $query = $this->select('bad_words')->first();
+        if ($query === null) {
+            return false;
+        }
+
+        $badWords = $query->bad_words;
+        if (is_array($badWords) === false) {
+            return false;
+        }
+
+        return (bool) count($badWords) > 0 ? true : false;
+    }
+
     public function addBadWords(array $badWords)
     {
         return $this->update(['bad_words' => $badWords]);
@@ -24,18 +62,5 @@ trait HasBlacklist
     public function clearBadWords()
     {
         $this->update(['bad_words' => []]);
-    }
-
-    public function addOnBlacklist()
-    {
-        return $this->update(['black_list' => true]);
-    }
-
-    public function removeOfBlacklist()
-    {
-        return \Illuminate\Support\Facades\DB::transaction(function () {
-            $this->update(['black_list' => false]);
-            $this->update(['bad_words' => []]);
-        });
     }
 }
