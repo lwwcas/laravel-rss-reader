@@ -69,7 +69,7 @@ class RssReader extends BaseRssReader
                 'title' => $rssClass->title(),
                 'key' => $rssClass->id(),
                 'action' => RssFeedLog::ACTION_SAVE,
-                'read_at' => $now,
+                'date' => $now,
             ]);
 
             foreach ($articles as $article) {
@@ -96,6 +96,7 @@ class RssReader extends BaseRssReader
                         'slug' => $slug,
                     ],
                     [
+                        'uuid' => Str::uuid(),
                         'url' => $article['url'],
                         'title' => $article['title'],
                         'description' => $article['description'],

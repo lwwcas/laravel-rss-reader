@@ -2,11 +2,11 @@
 
 namespace Lwwcas\LaravelRssReader\Abstract;
 
-use Lwwcas\LaravelRssReader\Concerns\ConfigFeed;
+use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
 
 abstract class BaseConfigsFeed
 {
-    use ConfigFeed;
+    use HasConfigFeed;
 
     public function id()
     {

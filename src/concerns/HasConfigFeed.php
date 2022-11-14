@@ -4,7 +4,7 @@ namespace Lwwcas\LaravelRssReader\Concerns;
 
 use Illuminate\Support\Facades\Config;
 
-trait ConfigFeed
+trait HasConfigFeed
 {
     /**
      * Used internally in order to retrieve a specific value from the

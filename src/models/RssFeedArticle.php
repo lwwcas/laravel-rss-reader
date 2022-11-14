@@ -8,14 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Casts\Json;
-use Lwwcas\LaravelRssReader\Concerns\ConfigFeed;
-use Lwwcas\LaravelRssReader\Concerns\DatesFeed;
+use Lwwcas\LaravelRssReader\Concerns\HasBlacklist;
+use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
+use Lwwcas\LaravelRssReader\Concerns\HasCustomFilter;
+use Lwwcas\LaravelRssReader\Concerns\HasDatesFeed;
 
 class RssFeedArticle extends Model
 {
     use HasFactory;
-    use ConfigFeed;
-    use DatesFeed;
+    use HasConfigFeed;
+    use HasDatesFeed;
+    use HasCustomFilter;
+    use HasBlacklist;
 
     public $readingLimit = 20;
 
@@ -54,6 +58,7 @@ class RssFeedArticle extends Model
         'data',
         'active',
         'black_list',
+        'bad_words',
         'date',
         'custom',
     ];
@@ -78,17 +83,14 @@ class RssFeedArticle extends Model
         'custom' => Json::class,
         'visible' => 'boolean',
         'black_list' => 'boolean',
+        'bad_words' => Json::class,
     ];
 
     public function __construct()
     {
-        $_readingLimit = $this->config('article-reading-limit');
-        $_defaultArticlesDateFormat = $this->config('default-articles-date-format');
-        $_enableCacheRssFeedId = $this->config('enable-caching-in-rss-feed-id');
-
-        $this->readingLimit = $_readingLimit;
-        $this->defaultArticlesDateFormat = $_defaultArticlesDateFormat;
-        $this->enableCacheRssFeedId = $_enableCacheRssFeedId;
+        $this->readingLimit = $this->config('article-reading-limit');
+        $this->defaultArticlesDateFormat = $this->config('default-articles-date-format');
+        $this->enableCacheRssFeedId = $this->config('enable-caching-in-rss-feed-id');
         $this->feedQuery = $this;
     }
 
@@ -122,6 +124,86 @@ class RssFeedArticle extends Model
             ->where('feed_id', $rssFeedId);
 
         return $this;
+    }
+
+    public function scopeWhereId($query, string $id)
+    {
+        return $query->where('id', $id);
+    }
+
+    public function scopeWhereUuid($query, string $uuid)
+    {
+        return $query->where('uuid', $uuid);
+    }
+
+    public function scopeWhereUrl($query, string $url)
+    {
+        return $query->where('url', $url);
+    }
+
+    public function scopeWhereTitle($query, string $title)
+    {
+        return $query->where('title', $title);
+    }
+
+    public function scopeWhereSlug($query, string $slug)
+    {
+        return $query->where('slug', $slug);
+    }
+
+    public function hasImage()
+    {
+        $image = $this->image;
+
+        if ($image === null) {
+            return false;
+        }
+
+        if ($image === '') {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function hasDescription()
+    {
+        $description = $this->description;
+
+        if ($description === null) {
+            return false;
+        }
+
+        if ($description === '') {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isActive(): bool
+    {
+        $query = $this->select('active')->first();
+        if ($query === null) {
+            return false;
+        }
+
+        return (bool) $query->active;
+    }
+
+    public function isDisable(): bool
+    {
+        return !$this->isActive();
+    }
+
+    public function active()
+    {
+        return $this->update(['active' => true]);
+    }
+
+    public function disable()
+    {
+        return $this->update(['active' => false]);
     }
 
     protected function getRssFeedId(string $feedKey)

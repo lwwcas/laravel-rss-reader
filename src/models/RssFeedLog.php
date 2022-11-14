@@ -5,15 +5,15 @@ namespace Lwwcas\LaravelRssReader\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Lwwcas\LaravelRssReader\Concerns\ConfigFeed;
 
 class RssFeedLog extends Model
 {
     use HasFactory;
-    use ConfigFeed;
 
     public const ACTION_AUTOSAVE = 'AUTOSAVE';
     public const ACTION_SAVE = 'SAVE';
+
+    public $defaultArticlesDateFormat = null;
 
     /**
      * The table associated with the model.
@@ -32,7 +32,7 @@ class RssFeedLog extends Model
         'title',
         'key',
         'action',
-        'read_at',
+        'date',
     ];
 
     /**
