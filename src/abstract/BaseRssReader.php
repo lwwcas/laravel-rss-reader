@@ -5,12 +5,12 @@ namespace Lwwcas\LaravelRssReader\Abstract;
 use Illuminate\Support\Arr;
 use Lwwcas\LaravelRssReader\Concerns\BlackList;
 use Lwwcas\LaravelRssReader\Concerns\BuildFeed;
-use Lwwcas\LaravelRssReader\Concerns\HasHasConfigFeed;
+use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
 use SimpleXMLElement;
 
 abstract class BaseRssReader
 {
-    use HasHasConfigFeed;
+    use HasConfigFeed;
     use BlackList;
     use BuildFeed;
 

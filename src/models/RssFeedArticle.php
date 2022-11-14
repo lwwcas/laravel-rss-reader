@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Casts\Json;
-use Lwwcas\LaravelRssReader\Concerns\HasHasConfigFeed;
+use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
 use Lwwcas\LaravelRssReader\Concerns\HasDatesFeed;
 
 class RssFeedArticle extends Model
 {
     use HasFactory;
-    use HasHasConfigFeed;
+    use HasConfigFeed;
     use HasDatesFeed;
 
     public $readingLimit = 20;
@@ -54,6 +54,7 @@ class RssFeedArticle extends Model
         'data',
         'active',
         'black_list',
+        'bad_words',
         'date',
         'custom',
     ];
@@ -78,6 +79,7 @@ class RssFeedArticle extends Model
         'custom' => Json::class,
         'visible' => 'boolean',
         'black_list' => 'boolean',
+        'bad_words' => Json::class,
     ];
 
     public function __construct()
