@@ -124,7 +124,7 @@ class RssFeedArticle extends Model
 
     public function addBadWords(array $badWords)
     {
-        $this->update(['bad_words' => $badWords]);
+        return $this->update(['bad_words' => $badWords]);
     }
 
     public function addNewBadWords(array $badWords)
@@ -146,23 +146,23 @@ class RssFeedArticle extends Model
 
     public function addOnBlacklist()
     {
-        $this->update(['black_list' => true]);
+        return $this->update(['black_list' => true]);
     }
 
     public function removeOfBlacklist()
     {
         $this->update(['black_list' => false]);
-        $this->update(['bad_words' => []]);
+        return $this->update(['bad_words' => []]);
     }
 
     public function active()
     {
-        $this->update(['active' => true]);
+        return $this->update(['active' => true]);
     }
 
     public function disable()
     {
-        $this->update(['active' => false]);
+        return $this->update(['active' => false]);
     }
 
     protected function getRssFeedId(string $feedKey)
