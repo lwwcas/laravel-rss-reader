@@ -4,6 +4,28 @@ namespace Lwwcas\LaravelRssReader\Concerns;
 
 trait HasCustomFilter
 {
+    public function customFilter()
+    {
+        $query = $this->select('custom')->first();
+        if ($query === null) {
+            return [];
+        }
+
+        return $query->custom;
+    }
+
+    /**
+     * Find a article by custom filter.
+     *
+     * @param string $filter
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function scopeWhereCustomFilter($query, string $filter)
+    {
+        return $query->whereJsonContains('custom', $filter);
+    }
+
     public function addCustomFilter(array $customFilter)
     {
         return $this->update(['custom' => $customFilter]);
