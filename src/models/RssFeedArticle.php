@@ -122,6 +122,17 @@ class RssFeedArticle extends Model
         return $this;
     }
 
+    public function addOnBlacklist()
+    {
+        $this->update(['black_list' => true]);
+    }
+
+    public function removeOfBlacklist()
+    {
+        $this->update(['black_list' => false]);
+        $this->update(['bad_words' => []]);
+    }
+
     public function active()
     {
         $this->update(['active' => true]);
