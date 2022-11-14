@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Casts\Json;
+use Lwwcas\LaravelRssReader\Concerns\HasBlacklist;
 use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
 use Lwwcas\LaravelRssReader\Concerns\HasDatesFeed;
 
@@ -16,6 +17,7 @@ class RssFeedArticle extends Model
     use HasFactory;
     use HasConfigFeed;
     use HasDatesFeed;
+    use HasBlacklist;
 
     public $readingLimit = 20;
 
