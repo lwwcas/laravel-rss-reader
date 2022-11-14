@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Casts\Json;
 use Lwwcas\LaravelRssReader\Concerns\HasBlacklist;
 use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
+use Lwwcas\LaravelRssReader\Concerns\HasCustomFilter;
 use Lwwcas\LaravelRssReader\Concerns\HasDatesFeed;
 
 class RssFeedArticle extends Model
@@ -17,6 +18,7 @@ class RssFeedArticle extends Model
     use HasFactory;
     use HasConfigFeed;
     use HasDatesFeed;
+    use HasCustomFilter;
     use HasBlacklist;
 
     public $readingLimit = 20;
