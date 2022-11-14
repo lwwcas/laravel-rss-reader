@@ -151,8 +151,10 @@ class RssFeedArticle extends Model
 
     public function removeOfBlacklist()
     {
-        $this->update(['black_list' => false]);
-        return $this->update(['bad_words' => []]);
+        return \Illuminate\Support\Facades\DB::transaction(function () {
+            $this->update(['black_list' => false]);
+            $this->update(['bad_words' => []]);
+        });
     }
 
     public function active()
