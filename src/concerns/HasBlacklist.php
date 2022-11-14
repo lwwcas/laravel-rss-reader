@@ -27,6 +27,28 @@ trait HasBlacklist
         });
     }
 
+    public function badWords()
+    {
+        $query = $this->select('bad_words')->first();
+        if ($query === null) {
+            return [];
+        }
+
+        return $query->bad_words;
+    }
+
+    /**
+     * Find a article by badWord.
+     *
+     * @param string $badWord
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function scopeWhereBadWord($query, string $badWord)
+    {
+        return $query->whereJsonContains('bad_words', $badWord);
+    }
+
     public function hasBadWords(): bool
     {
         $query = $this->select('bad_words')->first();
