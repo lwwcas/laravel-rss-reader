@@ -84,13 +84,9 @@ class RssFeedArticle extends Model
 
     public function __construct()
     {
-        $_readingLimit = $this->config('article-reading-limit');
-        $_defaultArticlesDateFormat = $this->config('default-articles-date-format');
-        $_enableCacheRssFeedId = $this->config('enable-caching-in-rss-feed-id');
-
-        $this->readingLimit = $_readingLimit;
-        $this->defaultArticlesDateFormat = $_defaultArticlesDateFormat;
-        $this->enableCacheRssFeedId = $_enableCacheRssFeedId;
+        $this->readingLimit = $this->config('article-reading-limit');
+        $this->defaultArticlesDateFormat = $this->config('default-articles-date-format');
+        $this->enableCacheRssFeedId = $this->config('enable-caching-in-rss-feed-id');
         $this->feedQuery = $this;
     }
 
