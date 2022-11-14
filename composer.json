@@ -34,7 +34,8 @@
         "illuminate/support": "^8.0|^9.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0"
+        "pestphp/pest": "2.x-dev",
+        "pestphp/pest-plugin-laravel": "2.x-dev"
     },
     "autoload": {
         "psr-4": {
@@ -62,7 +63,10 @@
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
