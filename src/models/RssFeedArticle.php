@@ -126,6 +126,21 @@ class RssFeedArticle extends Model
         return $this;
     }
 
+    public function isActive(): bool
+    {
+        $query = $this->select('active')->first();
+        if ($query === null) {
+            return false;
+        }
+
+        return (bool) $query->active;
+    }
+
+    public function isDisable(): bool
+    {
+        return !$this->isActive();
+    }
+
     public function active()
     {
         return $this->update(['active' => true]);
