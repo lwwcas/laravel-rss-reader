@@ -6,7 +6,7 @@ use Lwwcas\LaravelRssReader\Abstract\BaseFeed;
 
 trait BuildFeed
 {
-    use ConfigFeed;
+    use HasHasConfigFeed;
 
     protected function buildRssClass(string $rssFeed): BaseFeed
     {

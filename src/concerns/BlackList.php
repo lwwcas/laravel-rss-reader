@@ -7,7 +7,7 @@ use Lwwcas\LaravelRssReader\BadWords\BadWord;
 
 trait BlackList
 {
-    use ConfigFeed;
+    use HasConfigFeed;
 
     protected function isOnBlacklist(array $article): bool
     {
