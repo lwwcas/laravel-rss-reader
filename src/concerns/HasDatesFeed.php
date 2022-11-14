@@ -4,7 +4,7 @@ namespace Lwwcas\LaravelRssReader\Concerns;
 
 use Carbon\Carbon;
 
-trait DatesFeed
+trait HasDatesFeed
 {
     public function yesterday()
     {
