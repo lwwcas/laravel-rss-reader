@@ -6,12 +6,7 @@ trait HasCustomFilter
 {
     public function customFilter()
     {
-        $query = $this->select('custom')->first();
-        if ($query === null) {
-            return [];
-        }
-
-        return $query->custom;
+        return $this->custom;
     }
 
     /**
