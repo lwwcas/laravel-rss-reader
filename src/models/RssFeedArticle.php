@@ -126,6 +126,11 @@ class RssFeedArticle extends Model
         return $this;
     }
 
+    public function scopeWhereId($query, string $id)
+    {
+        return $query->where('id', $id);
+    }
+
     public function scopeWhereUuid($query, string $uuid)
     {
         return $query->where('uuid', $uuid);
@@ -144,6 +149,36 @@ class RssFeedArticle extends Model
     public function scopeWhereSlug($query, string $slug)
     {
         return $query->where('slug', $slug);
+    }
+
+    public function hasImage()
+    {
+        $image = $this->image;
+
+        if ($image === null) {
+            return false;
+        }
+
+        if ($image === '') {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function hasDescription()
+    {
+        $description = $this->description;
+
+        if ($description === null) {
+            return false;
+        }
+
+        if ($description === '') {
+            return false;
+        }
+
+        return true;
     }
 
     public function isActive(): bool
