@@ -9,7 +9,7 @@ trait BlackList
 {
     use HasConfigFeed;
 
-    protected function isOnBlacklist(array $article): bool
+    public function isOnBlacklist(array $article): bool
     {
         $isBlackList = @$article['black-list']['status'];
         if ($isBlackList === null || $isBlackList === false) {
@@ -19,7 +19,7 @@ trait BlackList
         return true;
     }
 
-    protected function hideArticlesOnBlackList(array $article): bool
+    public function hideArticlesOnBlackList(array $article): bool
     {
         $isBlackList = $this->isOnBlacklist($article);
         $hideArticlesOnBlackList = $this->config('hide-articles-on-blacklist');
@@ -31,7 +31,7 @@ trait BlackList
         return false;
     }
 
-    protected function saveArticlesOnBlackList(array $article): bool
+    public function saveArticlesOnBlackList(array $article): bool
     {
         $isBlackList = $this->isOnBlacklist($article);
         $saveArticlesOnBlackList = $this->config('save-articles-on-blacklist');
