@@ -8,7 +8,7 @@ trait BuildFeed
 {
     use HasConfigFeed;
 
-    protected function buildRssClass(string $rssFeed): BaseFeed
+    public function buildRssClass(string $rssFeed): BaseFeed
     {
         $namespace = 'Lwwcas\\LaravelRssReader\\feeds\\';
         $rssClassName = $namespace . str_replace('-', '', ucwords($rssFeed, '-'));
