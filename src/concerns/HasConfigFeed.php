@@ -16,6 +16,6 @@ trait HasConfigFeed
      */
     protected function config($configuration)
     {
-        return Config::get('laravel-rss-reader.' . $configuration);
+        return Config::get('lw-rss-reader.' . $configuration);
     }
 }
