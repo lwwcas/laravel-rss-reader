@@ -22,7 +22,7 @@ return [
 
     'save-articles-on-blacklist' => true,
 
-    'auto-update-hours-delay' => '24',
+    'auto-update-hours-delay' => 24,
 
     'default-date-format' => 'Y-m-d',
 
