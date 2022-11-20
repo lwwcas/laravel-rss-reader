@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use Lwwcas\LaravelRssReader\Concerns\BlackList;
 use Lwwcas\LaravelRssReader\Concerns\BuildFeed;
 use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
-use Lwwcas\LaravelRssReader\Contracts\FeedCreated;
 use SimpleXMLElement;
 
 abstract class BaseRssReader
@@ -40,19 +39,6 @@ abstract class BaseRssReader
         return $xmlElement;
     }
 
-    protected function feedCreated(BaseFeed $rssClass, array $feed): array
-    {
-        $ownerClassPath = $rssClass->configParameter('feedCreated');
-
-        if ($ownerClassPath === null) {
-            return $rssClass->feedCreated($feed);
-        }
-
-        $this->feedCreatedExceptions($ownerClassPath, $rssClass->id());
-
-        return (new $ownerClassPath())->feedCreated($feed);
-    }
-
     public function all(): array
     {
         return $this->rootFeed;
@@ -73,7 +59,7 @@ abstract class BaseRssReader
         return Arr::last($this->rootFeed['articles'], $callback, $default);
     }
 
-    protected function getNormalizeFeed(BaseFeed $rssClass): array
+    public function getNormalizeFeed(BaseFeed $rssClass): array
     {
         $url = $rssClass->url();
         $setup = $rssClass->setup();
@@ -84,7 +70,7 @@ abstract class BaseRssReader
         return $feed[$setup['core']];
     }
 
-    protected function getActiveFeed(string $rssFeed): ?BaseFeed
+    public function getActiveFeed(string $rssFeed): BaseFeed|null
     {
         $activeRss = $this->config('active-rss');
         $arrayFeedSearch = array_search($rssFeed, $activeRss);
@@ -120,32 +106,5 @@ abstract class BaseRssReader
         }
 
         return $xmlArray;
-    }
-
-    private function feedCreatedExceptions(string $path, string $id)
-    {
-        if (class_exists($path) === false) {
-            $rssClassId = strtoupper($id);
-            throw new \Exception(
-                'Class "' . $path . '" not found |
-                On rss feed config file, my-rss -> ' . $rssClassId . ' -> feedCreated not found'
-            );
-        }
-
-        $ownerClass = (new $path());
-
-        if ($ownerClass instanceof FeedCreated === false) {
-            throw new \Exception(
-                'Class "' . $path . '" not extends BaseFeedCreated'
-            );
-        }
-
-        if (method_exists($path, 'feedCreated') === false) {
-            throw new \Exception(
-                'On the Class "' . $path . '" the method "feedCreated" not found'
-            );
-        }
-
-        return null;
     }
 }
