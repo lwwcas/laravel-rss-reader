@@ -5,14 +5,14 @@ namespace Lwwcas\LaravelRssReader;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Abstract\BaseRssReader;
-use Lwwcas\LaravelRssReader\Concerns\CustomFilter;
+use Lwwcas\LaravelRssReader\Concerns\HasCustomFilterBuilder;
 use Lwwcas\LaravelRssReader\Models\RssFeed;
 use Lwwcas\LaravelRssReader\Models\RssFeedArticle;
 use Lwwcas\LaravelRssReader\Models\RssFeedLog;
 
 class RssReader extends BaseRssReader
 {
-    use CustomFilter;
+    use HasCustomFilterBuilder;
 
     public function read(string $rssFeed)
     {
