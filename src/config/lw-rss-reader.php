@@ -1,14 +1,17 @@
 <?php
 
 return [
-    'active-rss' => [
-        'laravel-news',
-    ],
 
     'my-rss' => [
         'laravel-news' => [
+            // 'custom-filter' => null,
+            // 'feedCreated' => null,
             // 'url' => 'https://news.google.com/news/rss',
         ]
+    ],
+
+    'active-rss' => [
+        'laravel-news',
     ],
 
     'article-reading-limit' => 20,
