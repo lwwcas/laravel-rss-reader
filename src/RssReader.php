@@ -33,7 +33,7 @@ class RssReader extends BaseRssReader
         $rootFeed['articles'] = $this->buildArticlesFeed($rssClass, $feed);
         $rootFeed['articles'] = $this->buildCustomFilter($rssClass, $rootFeed['articles']);
 
-        $this->rootFeed = $rssClass->feedCreated($rootFeed);
+        $this->rootFeed = $this->feedCreated($rssClass, $rootFeed);
         $this->rootFeed['articles'] = $this->verifyBannedWords($rssClass, $this->rootFeed['articles']);
 
         return $this;

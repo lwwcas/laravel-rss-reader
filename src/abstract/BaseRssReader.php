@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Lwwcas\LaravelRssReader\Concerns\BlackList;
 use Lwwcas\LaravelRssReader\Concerns\BuildFeed;
 use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
+use Lwwcas\LaravelRssReader\Contracts\FeedCreated;
 use SimpleXMLElement;
 
 abstract class BaseRssReader
@@ -37,6 +38,19 @@ abstract class BaseRssReader
         $xmlElement = new SimpleXMLElement($content);
 
         return $xmlElement;
+    }
+
+    protected function feedCreated(BaseFeed $rssClass, array $feed): array
+    {
+        $ownerClassPath = $rssClass->configParameter('feedCreated');
+
+        if ($ownerClassPath === null) {
+            return $rssClass->feedCreated($feed);
+        }
+
+        $this->feedCreatedExceptions($ownerClassPath, $rssClass->id());
+
+        return (new $ownerClassPath())->feedCreated($feed);
     }
 
     public function all(): array
@@ -106,5 +120,32 @@ abstract class BaseRssReader
         }
 
         return $xmlArray;
+    }
+
+    private function feedCreatedExceptions(string $path, string $id)
+    {
+        if (class_exists($path) === false) {
+            $rssClassId = strtoupper($id);
+            throw new \Exception(
+                'Class "' . $path . '" not found |
+                On rss feed config file, my-rss -> ' . $rssClassId . ' -> feedCreated not found'
+            );
+        }
+
+        $ownerClass = (new $path());
+
+        if ($ownerClass instanceof FeedCreated === false) {
+            throw new \Exception(
+                'Class "' . $path . '" not extends BaseFeedCreated'
+            );
+        }
+
+        if (method_exists($path, 'feedCreated') === false) {
+            throw new \Exception(
+                'On the Class "' . $path . '" the method "feedCreated" not found'
+            );
+        }
+
+        return null;
     }
 }
