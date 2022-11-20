@@ -7,7 +7,7 @@ return [
 
     'config-rss' => [
         'laravel-news' => [
-             // 'url' => 'https://news.google.com/news/rss',
+            // 'url' => 'https://news.google.com/news/rss',
         ]
     ],
 
