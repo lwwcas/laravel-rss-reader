@@ -59,7 +59,7 @@ abstract class BaseRssReader
         return Arr::last($this->rootFeed['articles'], $callback, $default);
     }
 
-    protected function getNormalizeFeed(BaseFeed $rssClass): array
+    public function getNormalizeFeed(BaseFeed $rssClass): array
     {
         $url = $rssClass->url();
         $setup = $rssClass->setup();
@@ -70,7 +70,7 @@ abstract class BaseRssReader
         return $feed[$setup['core']];
     }
 
-    protected function getActiveFeed(string $rssFeed): ?BaseFeed
+    public function getActiveFeed(string $rssFeed): BaseFeed|null
     {
         $activeRss = $this->config('active-rss');
         $arrayFeedSearch = array_search($rssFeed, $activeRss);

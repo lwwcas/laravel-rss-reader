@@ -1,14 +1,17 @@
 <?php
 
 return [
-    'active-rss' => [
-        'laravel-news',
+
+    'my-rss' => [
+        'laravel-news' => [
+            // 'custom-filter' => null,
+            // 'feedCreated' => null,
+            // 'url' => 'https://news.google.com/news/rss',
+        ]
     ],
 
-    'config-rss' => [
-        'laravel-news' => [
-             // 'url' => 'https://news.google.com/news/rss',
-        ]
+    'active-rss' => [
+        'laravel-news',
     ],
 
     'article-reading-limit' => 20,
@@ -19,7 +22,7 @@ return [
 
     'save-articles-on-blacklist' => true,
 
-    'auto-update-hours-delay' => '24',
+    'auto-update-hours-delay' => 24,
 
     'default-date-format' => 'Y-m-d',
 

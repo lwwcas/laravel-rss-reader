@@ -5,14 +5,16 @@ namespace Lwwcas\LaravelRssReader;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Abstract\BaseRssReader;
-use Lwwcas\LaravelRssReader\Concerns\CustomFilter;
+use Lwwcas\LaravelRssReader\Concerns\HasCustomFilterBuilder;
+use Lwwcas\LaravelRssReader\Concerns\HasFeedCreatedBuilder;
 use Lwwcas\LaravelRssReader\Models\RssFeed;
 use Lwwcas\LaravelRssReader\Models\RssFeedArticle;
 use Lwwcas\LaravelRssReader\Models\RssFeedLog;
 
 class RssReader extends BaseRssReader
 {
-    use CustomFilter;
+    use HasCustomFilterBuilder;
+    use HasFeedCreatedBuilder;
 
     public function read(string $rssFeed)
     {
@@ -33,7 +35,7 @@ class RssReader extends BaseRssReader
         $rootFeed['articles'] = $this->buildArticlesFeed($rssClass, $feed);
         $rootFeed['articles'] = $this->buildCustomFilter($rssClass, $rootFeed['articles']);
 
-        $this->rootFeed = $rssClass->feedCreated($rootFeed);
+        $this->rootFeed = $this->buildFeedCreator($rssClass, $rootFeed);
         $this->rootFeed['articles'] = $this->verifyBannedWords($rssClass, $this->rootFeed['articles']);
 
         return $this;

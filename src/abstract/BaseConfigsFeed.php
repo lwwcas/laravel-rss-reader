@@ -163,10 +163,10 @@ abstract class BaseConfigsFeed
         ];
     }
 
-    protected function configParameter($config)
+    public function configParameter($config)
     {
         $rssId = $this->id . '.';
-        $config = $this->config('config-rss.' . $rssId . $config);
+        $config = $this->config('my-rss.' . $rssId . $config);
 
         if ($config === null) {
             return null;
