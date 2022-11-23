@@ -32,7 +32,7 @@ class RssReaderServiceProvider extends PackageServiceProvider
                     ->askToStarRepoOnGitHub('lwwcas/laravel-rss-reader')
                     ->endWith(function (InstallCommand $command) {
                         $command->info('');
-                        $command->info('Be Happy!');
+                        $command->info('You do not find the happy life. You make it.');
                     });
             });
     }
