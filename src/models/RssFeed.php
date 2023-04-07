@@ -2,6 +2,7 @@
 
 namespace Lwwcas\LaravelRssReader\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -40,6 +41,11 @@ class RssFeed extends Model
         self::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
         });
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return \Lwwcas\LaravelRssReader\Database\Factories\RssFeedFactory::new();
     }
 
     /**
