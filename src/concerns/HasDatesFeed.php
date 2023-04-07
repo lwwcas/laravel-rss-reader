@@ -117,10 +117,10 @@ trait HasDatesFeed
         }
 
         $startYear = Carbon::parse($year . '/01/01')
-        ->format($this->defaultArticlesDateFormat);
+            ->format($this->defaultArticlesDateFormat);
 
         $endYear = Carbon::parse($year . '/12/31')
-        ->endOfMonth()
+            ->endOfMonth()
             ->format($this->defaultArticlesDateFormat);
 
         $this->feedQuery = $this->betweenDate($startYear, $endYear);

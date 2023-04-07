@@ -20,12 +20,12 @@ trait HasFeedCreatedBuilder
             return $rssClass->feedCreated($feed);
         }
 
-        $this->exceptions($ownerClassPath, $rssClass->id());
+        $this->feedExceptions($ownerClassPath, $rssClass->id());
 
         return (new $ownerClassPath())->feedCreated($feed);
     }
 
-    private function exceptions(string $path, string $id)
+    private function feedExceptions(string $path, string $id)
     {
         if (class_exists($path) === false) {
             $rssClassId = strtoupper($id);
