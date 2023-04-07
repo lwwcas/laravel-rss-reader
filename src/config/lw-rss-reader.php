@@ -7,7 +7,7 @@ return [
             // 'custom-filter' => null,
             // 'feedCreated' => null,
             // 'url' => 'https://news.google.com/news/rss',
-        ]
+        ],
     ],
 
     'active-rss' => [
