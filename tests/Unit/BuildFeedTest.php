@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use Lwwcas\LaravelRssReader\Feeds\LaravelNews;
 use Lwwcas\LaravelRssReader\RssReader;
 use Lwwcas\LaravelRssReader\Tests\TestCase;
 
@@ -12,6 +13,6 @@ class BuildFeedTest extends TestCase
     {
         $laravelNews = (new RssReader())->buildRssClass('laravel-news');
 
-        expect($laravelNews)->toBeObject();
+        $this->assertInstanceOf(LaravelNews::class, $laravelNews);
     }
 }
