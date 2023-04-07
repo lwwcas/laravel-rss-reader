@@ -93,27 +93,26 @@ class RssReader extends BaseRssReader
                 }
 
                 $slug = Str::of($article['title'])->slug('-');
-                $rssFeed->articles()->updateOrCreate(
-                    [
-                        'slug' => $slug,
-                    ],
-                    [
-                        'uuid' => Str::uuid(),
-                        'url' => $article['url'],
-                        'title' => $article['title'],
-                        'description' => $article['description'],
-                        'image' => $article['image'],
-                        'data' => $article['data'],
-                        'date' => $article['date'],
-                        'custom' => $article['custom_filter'],
-                        'language' => $rssClass->language(),
-                        'active' => $isActive,
-                        'black_list' => $isOnBlackList,
-                        'bad_words' => $badWords,
-                    ]
-                );
+                if ($rssFeed->articles()->whereSlug($slug)->first() === null) {
+                    $rssFeed->articles()->create(
+                        [
+                            'uuid' => Str::uuid(),
+                            'url' => $article['url'],
+                            'title' => $article['title'],
+                            'slug' => $slug,
+                            'description' => $article['description'],
+                            'image' => $article['image'],
+                            'data' => $article['data'],
+                            'date' => $article['date'],
+                            'custom' => $article['custom_filter'],
+                            'language' => $rssClass->language(),
+                            'active' => $isActive,
+                            'black_list' => $isOnBlackList,
+                            'bad_words' => $badWords,
+                        ]
+                    );
+                }
             }
-
             return $rssFeed;
         });
 

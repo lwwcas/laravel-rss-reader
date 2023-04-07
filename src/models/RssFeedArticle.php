@@ -217,8 +217,8 @@ class RssFeedArticle extends Model
         }
 
         $rssFeed = RssFeed::select('id', 'key')
-                ->where('key', $this->feedKey)
-                ->first();
+            ->where('key', $this->feedKey)
+            ->first();
 
         if ($rssFeed === null) {
             throw new \LogicException('The RSS feed key is not valid.');
