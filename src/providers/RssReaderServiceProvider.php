@@ -3,6 +3,7 @@
 namespace Lwwcas\LaravelRssReader\Providers;
 
 use Lwwcas\LaravelRssReader\Commands\RssReaderReadCommand;
+use Lwwcas\LaravelRssReader\Commands\RssReaderSaveCommand;
 use Lwwcas\LaravelRssReader\RssReader;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
@@ -20,7 +21,10 @@ class RssReaderServiceProvider extends PackageServiceProvider
                 'create_lw_feed_articles_table',
                 'create_lw_feed_logs_table'
             ])
-            ->hasCommand(RssReaderReadCommand::class)
+            ->hasCommands([
+                RssReaderReadCommand::class,
+                RssReaderSaveCommand::class,
+            ])
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->startWith(function (InstallCommand $command) {
