@@ -41,7 +41,7 @@ class RssReader extends BaseRssReader
         return $this;
     }
 
-    public function save(): RssReader
+    public function save(bool $isAutoSave = false): RssReader
     {
         if ($this->rssFeed === null) {
             return null;
@@ -54,7 +54,7 @@ class RssReader extends BaseRssReader
         }
 
         $articles = $this->rootFeed['articles'];
-        DB::transaction(function () use ($rssClass, $articles) {
+        DB::transaction(function () use ($rssClass, $articles, $isAutoSave) {
             $now = date('Y-m-d H:i:s');
             $rssFeed = RssFeed::updateOrCreate(
                 [
@@ -67,10 +67,11 @@ class RssReader extends BaseRssReader
                 ]
             );
 
+            $action = $isAutoSave === true ? RssFeedLog::ACTION_AUTOSAVE : RssFeedLog::ACTION_SAVE;
             $rssFeed->logs()->create([
                 'title' => $rssClass->title(),
                 'key' => $rssClass->id(),
-                'action' => RssFeedLog::ACTION_SAVE,
+                'action' => $action,
                 'date' => $now,
             ]);
 

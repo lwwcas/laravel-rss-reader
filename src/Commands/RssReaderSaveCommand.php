@@ -42,7 +42,7 @@ class RssReaderSaveCommand extends Command
 
         $this->tablesOutPut($rssData);
 
-        $articles = (new RssReader())->feed($rssFeed)->save()->get();
+        $articles = (new RssReader())->feed($rssFeed)->save(true)->get();
 
         $this->tablesArticlesSimplesOutput($articles);
 
