@@ -32,7 +32,9 @@ class ReadConsoleCommandTest extends TestCase
     /** @test */
     public function it_not_should_read_feed_based_on_key_not_found_in_config_file(): void
     {
-        $key = 'zzzz-example-zzz-' . rand(100, 9999);
+        config()->set('lw-rss-reader.active-rss', []);
+
+        $key = 'example-' . rand(100, 9999);
         RssFeed::factory()->create([
             'key' => $key,
         ]);
