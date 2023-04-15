@@ -90,6 +90,11 @@ abstract class BaseRssReader
         return (new $activeRss[$rssFeed]());
     }
 
+    public function getRssFeed(): string
+    {
+        return $this->rssFeed;
+    }
+
     protected function toArray(SimpleXMLElement $xmlElement = null)
     {
         if (!$xmlElement->children()) {
