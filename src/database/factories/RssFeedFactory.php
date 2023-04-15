@@ -18,7 +18,7 @@ class RssFeedFactory extends Factory
      */
     public function definition()
     {
-        $title = fake()->name();
+        $title = fake()->title();
 
         return [
             'title' => $title,
