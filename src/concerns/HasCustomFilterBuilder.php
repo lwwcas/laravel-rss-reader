@@ -13,16 +13,16 @@ trait HasCustomFilterBuilder
         foreach ($articles as $article) {
             $custom = $this->filter($rssClass, $article);
             if ($custom === null) {
-                $article['custom_filter'] = null;
+                $article['custom-filter'] = null;
                 continue;
             }
 
             if (is_array($custom) === false) {
-                $article['custom_filter'] = null;
+                $article['custom-filter'] = null;
                 continue;
             }
 
-            $article['custom_filter'] = $custom;
+            $article['custom-filter'] = $custom;
             $_articles[] = $article;
         }
 

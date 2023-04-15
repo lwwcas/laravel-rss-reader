@@ -123,7 +123,7 @@ class RssReader extends BaseRssReader
                             'image' => $article['image'],
                             'data' => $article['data'],
                             'date' => $article['date'],
-                            'custom' => $article['custom_filter'],
+                            'custom' => $article['custom-filter'],
                             'language' => $rssClass->language(),
                             'active' => $isActive,
                             'black_list' => $isOnBlackList,
