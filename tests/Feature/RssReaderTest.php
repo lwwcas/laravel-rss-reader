@@ -1,8 +1,6 @@
 <?php
 
-namespace Tests\Unit;
-
-use Illuminate\Support\Str;
+namespace Tests\Feature;
 
 use Lwwcas\LaravelRssReader\Facedes\RssReader as RssReaderFacedes;
 use Lwwcas\LaravelRssReader\RssReader;

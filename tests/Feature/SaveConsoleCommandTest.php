@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature;
 
 use Lwwcas\LaravelRssReader\Models\RssFeed;
 use Lwwcas\LaravelRssReader\Models\RssFeedArticle;
