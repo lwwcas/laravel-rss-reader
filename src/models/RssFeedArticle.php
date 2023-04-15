@@ -3,6 +3,7 @@
 namespace Lwwcas\LaravelRssReader\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -12,6 +13,7 @@ use Lwwcas\LaravelRssReader\Concerns\HasBlacklist;
 use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
 use Lwwcas\LaravelRssReader\Concerns\HasCustomFilter;
 use Lwwcas\LaravelRssReader\Concerns\HasDatesFeed;
+use Lwwcas\LaravelRssReader\Database\Factories\RssFeedArticleFactory;
 
 class RssFeedArticle extends Model
 {
@@ -48,6 +50,7 @@ class RssFeedArticle extends Model
      * @var array
      */
     protected $fillable = [
+        'feed_id',
         'uuid',
         'url',
         'title',
@@ -104,8 +107,12 @@ class RssFeedArticle extends Model
         parent::boot();
         self::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
-            $model->slug = (string) Str::of($model->title)->slug('-');
         });
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return RssFeedArticleFactory::new();
     }
 
     /**
