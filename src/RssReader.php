@@ -16,9 +16,27 @@ class RssReader extends BaseRssReader
     use HasCustomFilterBuilder;
     use HasFeedCreatedBuilder;
 
-    public function read(string $rssFeed)
+    public function read(string $rssFeed, bool $isAutoRead = false)
     {
-        return (new RssFeedArticle())->read($rssFeed);
+        $rssFeedArticle = (new RssFeedArticle())->read($rssFeed);
+
+        if ($rssFeedArticle->first() === null) {
+            return null;
+        }
+
+        $action = $isAutoRead === true ? RssFeedLog::ACTION_AUTOREAD : RssFeedLog::ACTION_READ;
+        $rssClass = $this->getActiveFeed($rssFeed);
+        $now = date('Y-m-d H:i:s');
+
+        $feed = $rssFeedArticle->first()->feed()->first();
+        $feed->logs()->create([
+            'title' => $rssClass->title(),
+            'key' => $rssClass->id(),
+            'action' => $action,
+            'date' => $now,
+        ]);
+
+        return $rssFeedArticle;
     }
 
     public function feed(string $rssFeed): RssReader
