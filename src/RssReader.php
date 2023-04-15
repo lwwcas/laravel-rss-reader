@@ -16,9 +16,27 @@ class RssReader extends BaseRssReader
     use HasCustomFilterBuilder;
     use HasFeedCreatedBuilder;
 
-    public function read(string $rssFeed)
+    public function read(string $rssFeed, bool $isAutoRead = false)
     {
-        return (new RssFeedArticle())->read($rssFeed);
+        $rssFeedArticle = (new RssFeedArticle())->read($rssFeed);
+
+        if ($rssFeedArticle->first() === null) {
+            return null;
+        }
+
+        $action = $isAutoRead === true ? RssFeedLog::ACTION_AUTOREAD : RssFeedLog::ACTION_READ;
+        $rssClass = $this->getActiveFeed($rssFeed);
+        $now = date('Y-m-d H:i:s');
+
+        $feed = $rssFeedArticle->first()->feed()->first();
+        $feed->logs()->create([
+            'title' => $rssClass->title(),
+            'key' => $rssClass->id(),
+            'action' => $action,
+            'date' => $now,
+        ]);
+
+        return $rssFeedArticle;
     }
 
     public function feed(string $rssFeed): RssReader
@@ -41,7 +59,7 @@ class RssReader extends BaseRssReader
         return $this;
     }
 
-    public function save(): RssReader
+    public function save(bool $isAutoSave = false): RssReader
     {
         if ($this->rssFeed === null) {
             return null;
@@ -54,7 +72,7 @@ class RssReader extends BaseRssReader
         }
 
         $articles = $this->rootFeed['articles'];
-        DB::transaction(function () use ($rssClass, $articles) {
+        DB::transaction(function () use ($rssClass, $articles, $isAutoSave) {
             $now = date('Y-m-d H:i:s');
             $rssFeed = RssFeed::updateOrCreate(
                 [
@@ -67,10 +85,11 @@ class RssReader extends BaseRssReader
                 ]
             );
 
+            $action = $isAutoSave === true ? RssFeedLog::ACTION_AUTOSAVE : RssFeedLog::ACTION_SAVE;
             $rssFeed->logs()->create([
                 'title' => $rssClass->title(),
                 'key' => $rssClass->id(),
-                'action' => RssFeedLog::ACTION_SAVE,
+                'action' => $action,
                 'date' => $now,
             ]);
 
@@ -93,27 +112,26 @@ class RssReader extends BaseRssReader
                 }
 
                 $slug = Str::of($article['title'])->slug('-');
-                $rssFeed->articles()->updateOrCreate(
-                    [
-                        'slug' => $slug,
-                    ],
-                    [
-                        'uuid' => Str::uuid(),
-                        'url' => $article['url'],
-                        'title' => $article['title'],
-                        'description' => $article['description'],
-                        'image' => $article['image'],
-                        'data' => $article['data'],
-                        'date' => $article['date'],
-                        'custom' => $article['custom_filter'],
-                        'language' => $rssClass->language(),
-                        'active' => $isActive,
-                        'black_list' => $isOnBlackList,
-                        'bad_words' => $badWords,
-                    ]
-                );
+                if ($rssFeed->articles()->whereSlug($slug)->first() === null) {
+                    $rssFeed->articles()->create(
+                        [
+                            'uuid' => Str::uuid(),
+                            'url' => $article['url'],
+                            'title' => $article['title'],
+                            'slug' => $slug,
+                            'description' => $article['description'],
+                            'image' => $article['image'],
+                            'data' => $article['data'],
+                            'date' => $article['date'],
+                            'custom' => $article['custom_filter'],
+                            'language' => $rssClass->language(),
+                            'active' => $isActive,
+                            'black_list' => $isOnBlackList,
+                            'bad_words' => $badWords,
+                        ]
+                    );
+                }
             }
-
             return $rssFeed;
         });
 

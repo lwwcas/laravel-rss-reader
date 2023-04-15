@@ -37,12 +37,12 @@ trait HasCustomFilterBuilder
             return $rssClass->customFilter($article);
         }
 
-        $this->exceptions($ownerClassPath, $rssClass->id());
+        $this->customExceptions($ownerClassPath, $rssClass->id());
 
         return (new $ownerClassPath())->customFilter($article);
     }
 
-    private function exceptions(string $path, string $id)
+    private function customExceptions(string $path, string $id)
     {
         if (class_exists($path) === false) {
             $rssClassId = strtoupper($id);

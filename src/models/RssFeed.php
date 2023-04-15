@@ -2,9 +2,11 @@
 
 namespace Lwwcas\LaravelRssReader\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Lwwcas\LaravelRssReader\Database\Factories\RssFeedFactory;
 
 class RssFeed extends Model
 {
@@ -42,6 +44,11 @@ class RssFeed extends Model
         });
     }
 
+    protected static function newFactory(): Factory
+    {
+        return RssFeedFactory::new();
+    }
+
     /**
      * Get the articles for the rss feed.
      */
@@ -56,5 +63,10 @@ class RssFeed extends Model
     public function logs()
     {
         return $this->hasMany(RssFeedLog::class, 'feed_id');
+    }
+
+    public function scopeWhereKey($query, string $key)
+    {
+        return $query->where('key', $key);
     }
 }

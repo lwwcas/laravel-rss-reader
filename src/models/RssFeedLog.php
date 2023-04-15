@@ -5,6 +5,8 @@ namespace Lwwcas\LaravelRssReader\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Lwwcas\LaravelRssReader\Database\Factories\RssFeedLogFactory;
 
 class RssFeedLog extends Model
 {
@@ -12,6 +14,9 @@ class RssFeedLog extends Model
 
     public const ACTION_AUTOSAVE = 'AUTOSAVE';
     public const ACTION_SAVE = 'SAVE';
+
+    public const ACTION_AUTOREAD = 'AUTOREAD';
+    public const ACTION_READ = 'READ';
 
     public $defaultArticlesDateFormat = null;
 
@@ -28,6 +33,7 @@ class RssFeedLog extends Model
      * @var array
      */
     protected $fillable = [
+        'feed_id',
         'uuid',
         'title',
         'key',
@@ -46,6 +52,11 @@ class RssFeedLog extends Model
         self::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
         });
+    }
+
+    protected static function newFactory(): Factory
+    {
+        return RssFeedLogFactory::new();
     }
 
     /**
