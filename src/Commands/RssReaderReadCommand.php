@@ -42,7 +42,17 @@ class RssReaderReadCommand extends Command
 
         $this->tablesOutPut($rssData);
 
-        $articles = $reader->read($rssFeed)->currentMonth()->get();
+        $read = $reader->read($rssFeed, true);
+        if ($read === null) {
+            $this->info('There are no articles to list');
+            $this->newLine();
+
+            $this->line('Try running this command');
+            $this->line('php artisan rss-reader:save ' . $rssFeed);
+            return Command::SUCCESS;
+        }
+
+        $articles = $read->currentMonth()->get();
 
         $this->tablesArticlesSimplesOutput($articles);
 
