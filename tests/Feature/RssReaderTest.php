@@ -178,4 +178,74 @@ class RssReaderTest extends TestCase
 
         (new RssReader())->feed('laravel-news');
     }
+
+    /** @test */
+    public function it_should_pass_the_rss_feed_to_the_highest_instance_parameter()
+    {
+        config()->set('lw-rss-reader.active-rss', ['laravel-news']);
+
+        $feed = (new RssReader())->feed('laravel-news');
+
+        $this->assertNotNull($feed->getRssFeed());
+        $this->assertEquals($feed->getRssFeed(), 'laravel-news');
+    }
+
+    /** @test */
+    public function it_should_pass_the_root_feed_to_the_highest_instance_parameter()
+    {
+        config()->set('lw-rss-reader.active-rss', ['laravel-news']);
+
+        $feed = (new RssReader())->feed('laravel-news');
+        $rootFeed = $feed->all();
+
+        $this->assertNotNull($rootFeed);
+        $this->assertIsArray($rootFeed);
+        $this->assertArrayHasKey('url', $rootFeed);
+        $this->assertArrayHasKey('title', $rootFeed);
+        $this->assertArrayHasKey('description', $rootFeed);
+        $this->assertArrayHasKey('metadata', $rootFeed);
+        $this->assertArrayHasKey('generator', $rootFeed['metadata']);
+        $this->assertArrayHasKey('language', $rootFeed['metadata']);
+        $this->assertArrayHasKey('lastUpdate', $rootFeed['metadata']);
+        $this->assertArrayHasKey('image', $rootFeed);
+        $this->assertArrayHasKey('articles', $rootFeed);
+    }
+
+    /** @test */
+    public function it_should_pass_the_root_feed_articles_to_the_highest_instance_parameter()
+    {
+        config()->set('lw-rss-reader.active-rss', ['laravel-news']);
+
+        $feed = (new RssReader())->feed('laravel-news');
+        $feedArticles = $feed->get();
+
+        $this->assertNotNull($feedArticles);
+        $this->assertIsArray($feedArticles);
+    }
+
+    /** @test */
+    public function it_should_pass_the_root_feed_articles_on_all_to_the_highest_instance_parameter()
+    {
+        config()->set('lw-rss-reader.active-rss', ['laravel-news']);
+
+        $feed = (new RssReader())->feed('laravel-news');
+        $feedArticles = $feed->all();
+
+        $this->assertNotNull($feedArticles);
+        $this->assertIsArray($feedArticles);
+        $this->assertArrayHasKey('articles', $feedArticles);
+        $this->assertNotNull($feedArticles['articles']);
+        $this->assertIsArray($feedArticles['articles']);
+    }
+
+    /** @test */
+    public function it_should_return_the_same_instance_of_the_class()
+    {
+        config()->set('lw-rss-reader.active-rss', ['laravel-news']);
+
+        $feed = (new RssReader())->feed('laravel-news');
+
+        $this->assertNotNull($feed);
+        $this->assertInstanceOf(RssReader::class, $feed);
+    }
 }
