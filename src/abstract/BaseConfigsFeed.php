@@ -16,131 +16,131 @@ abstract class BaseConfigsFeed
     public function generator()
     {
         $config = $this->configParameter('generator');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->generator;
         }
 
-        return $this->generator;
+        return $config;
     }
 
     public function url()
     {
         $config = $this->configParameter('url');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->url;
         }
 
-        return $this->url;
+        return $config;
     }
 
     public function image()
     {
         $config = $this->configParameter('image');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->image;
         }
 
-        return $this->image;
+        return $config;
     }
 
     public function title()
     {
         $config = $this->configParameter('title');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->title;
         }
 
-        return $this->title;
+        return $config;
     }
 
     public function description()
     {
         $config = $this->configParameter('description');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->description;
         }
 
-        return $this->description;
+        return $config;
     }
 
     public function language()
     {
         $config = $this->configParameter('language');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->language;
         }
 
-        return $this->language;
+        return $config;
     }
 
     public function metadata()
     {
         $config = $this->configParameter('metadata');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->metadata;
         }
 
-        return $this->metadata;
+        return $config;
     }
 
     public function setup()
     {
         $config = $this->configParameter('setup');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->setup;
         }
 
-        return $this->setup;
+        return $config;
     }
 
     public function article()
     {
         $config = $this->configParameter('article');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->article;
         }
 
-        return $this->article;
+        return $config;
     }
 
     public function articleData()
     {
         $config = $this->configParameter('articleData');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->articleData;
         }
 
-        return $this->articleData;
+        return $config;
     }
 
     public function cache()
     {
         $config = $this->configParameter('cache');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->cache;
         }
 
-        return $this->cache;
+        return $config;
     }
 
     public function autoUpdate()
     {
         $config = $this->configParameter('autoUpdate');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->autoUpdate;
         }
 
-        return $this->autoUpdate;
+        return $config;
     }
 
     public function badWordsVerification()
     {
         $config = $this->configParameter('badWordsVerification');
-        if ($config != null) {
-            return $config;
+        if ($config === null) {
+            return $this->badWordsVerification;
         }
 
-        return $this->badWordsVerification;
+        return $config;
     }
 
     public function all()
