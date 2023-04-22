@@ -299,4 +299,31 @@ class RssReaderTest extends TestCase
         $this->assertTrue($class->cache());
         $this->assertInstanceOf(RssReader::class, $feed);
     }
+
+    /** @test */
+    public function it_should_save_the_feed_and_its_articles_in_the_database()
+    {
+        config()->set('lw-rss-reader.active-rss', ['laravel-news']);
+        config()->set('lw-rss-reader.my-rss', [
+            'laravel-news' => [
+                'cache' => true,
+            ]
+        ]);
+
+        $feed = (new RssReader())->feed('laravel-news')->save();
+
+        $this->assertNotNull($feed);
+        $this->assertInstanceOf(RssReader::class, $feed);
+
+        $rssFeed = RssFeed::where('key', 'laravel-news')->first();
+
+        $this->assertNotNull($rssFeed);
+        $this->assertEquals($rssFeed->title, 'Laravel News');
+
+        $articles = RssFeedArticle::where('feed_id', $rssFeed->id)->first();
+
+        $this->assertNotNull($articles);
+        $this->assertNotNull($articles->title);
+        $this->assertNotNull($articles->url);
+    }
 }
