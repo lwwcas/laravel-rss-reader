@@ -59,9 +59,9 @@ class RssReader extends BaseRssReader
         return $this;
     }
 
-    public function save(bool $isAutoSave = false): RssReader
+    public function save(bool $isAutoSave = false): null|RssReader
     {
-        if ($this->rssFeed === null) {
+        if ($this->getRssFeed() === null) {
             return null;
         }
 

@@ -90,7 +90,7 @@ abstract class BaseRssReader
         return (new $activeRss[$rssFeed]());
     }
 
-    public function getRssFeed(): string
+    public function getRssFeed(): null|string
     {
         return $this->rssFeed;
     }
