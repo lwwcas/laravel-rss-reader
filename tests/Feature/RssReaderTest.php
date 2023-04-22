@@ -248,4 +248,14 @@ class RssReaderTest extends TestCase
         $this->assertNotNull($feed);
         $this->assertInstanceOf(RssReader::class, $feed);
     }
+
+    /** @test */
+    public function it_should_return_null_when_save_is_called_and_there_is_no_rss_feed()
+    {
+        config()->set('lw-rss-reader.active-rss', []);
+
+        $feed = (new RssReader())->save('laravel-news');
+
+        $this->assertNull($feed);
+    }
 }
