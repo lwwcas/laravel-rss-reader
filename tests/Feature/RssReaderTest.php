@@ -258,4 +258,24 @@ class RssReaderTest extends TestCase
 
         $this->assertNull($feed);
     }
+
+    /** @test */
+    public function it_should_return_null_when_save_is_called_and_cache_is_set_to_false()
+    {
+        config()->set('lw-rss-reader.active-rss', ['laravel-news']);
+        config()->set('lw-rss-reader.my-rss', [
+            'laravel-news' => [
+                'cache' => false,
+            ]
+        ]);
+
+        $feed = (new RssReader());
+        $class = $feed->getActiveFeed('laravel-news');
+
+        $response =  $feed->save('laravel-news');
+
+        $this->assertNull($response);
+        $this->assertNotNull($feed);
+        $this->assertFalse($class->cache());
+    }
 }
