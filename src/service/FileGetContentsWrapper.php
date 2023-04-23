@@ -1,11 +1,17 @@
 <?php
 
-namespace Lwwcas\LaravelRssReader\Abstract;
+namespace Lwwcas\LaravelRssReader\Service;
 
 class FileGetContentsWrapper
 {
     private $fileUrl = 'http://www.localhost.com';
     private $errorMessage = 'Page not found';
+    public $xmlSimulatedReturn;
+
+    public function __construct(string $xmlSimulatedReturn = null)
+    {
+        $this->xmlSimulatedReturn = $xmlSimulatedReturn;
+    }
 
     public function setUrl(string $url)
     {
@@ -31,6 +37,11 @@ class FileGetContentsWrapper
 
     public function getContents()
     {
+        if ($this->xmlSimulatedReturn) {
+            $xml = utf8_encode($this->xmlSimulatedReturn);
+            return $xml;
+        }
+
         $url = $this->getUrl();
         $message = $this->getErrorMessage();
         $contents = @file_get_contents($url);

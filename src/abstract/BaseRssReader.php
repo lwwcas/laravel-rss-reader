@@ -3,10 +3,10 @@
 namespace Lwwcas\LaravelRssReader\Abstract;
 
 use Illuminate\Support\Arr;
-use Lwwcas\LaravelRssReader\Abstract\FileGetContentsWrapper;
 use Lwwcas\LaravelRssReader\Concerns\BlackList;
 use Lwwcas\LaravelRssReader\Concerns\BuildFeed;
 use Lwwcas\LaravelRssReader\Concerns\HasConfigFeed;
+use Lwwcas\LaravelRssReader\Service\FileGetContentsWrapper as FileGetContents;
 use SimpleXMLElement;
 
 abstract class BaseRssReader
@@ -21,6 +21,13 @@ abstract class BaseRssReader
         'articles' => [],
     ];
 
+    public $fileGetContents;
+
+    public function __construct($fileGetContents = null)
+    {
+        $this->fileGetContents = $fileGetContents;
+    }
+
     /**
      * Used to parse an RSS feed.
      *
@@ -28,7 +35,7 @@ abstract class BaseRssReader
      */
     public function readFromUrl(string $url): SimpleXMLElement
     {
-        $contents = (new FileGetContentsWrapper())
+        $contents = (new FileGetContents($this->fileGetContents))
             ->setUrl($url)
             ->setErrorMessage('The RSS feed url is not valid.')
             ->getContents();
