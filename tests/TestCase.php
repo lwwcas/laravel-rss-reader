@@ -2,12 +2,7 @@
 
 namespace Lwwcas\LaravelRssReader\Tests;
 
-use Illuminate\Database\Query\Expression;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 use Lwwcas\LaravelRssReader\Models\RssFeed;
 use Lwwcas\LaravelRssReader\Models\RssFeedArticle;
 use Lwwcas\LaravelRssReader\Providers\RssReaderServiceProvider;
