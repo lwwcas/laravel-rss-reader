@@ -3,15 +3,18 @@
 namespace Tests\Feature;
 
 use Lwwcas\LaravelRssReader\Facedes\RssReader as RssReaderFacedes;
-use Lwwcas\LaravelRssReader\RssReader;
 use Lwwcas\LaravelRssReader\Feeds\LaravelNews;
 use Lwwcas\LaravelRssReader\Models\RssFeed;
 use Lwwcas\LaravelRssReader\Models\RssFeedArticle;
 use Lwwcas\LaravelRssReader\Models\RssFeedLog;
+use Lwwcas\LaravelRssReader\RssReader;
+use Lwwcas\LaravelRssReader\Tests\FileGetContentsLaravelMock;
 use Lwwcas\LaravelRssReader\Tests\TestCase;
 
 class RssReaderTest extends TestCase
 {
+    use FileGetContentsLaravelMock;
+
     /** @test */
     public function it_should_build_the_instance_of_the_object_with_the_facedes()
     {
@@ -146,9 +149,12 @@ class RssReaderTest extends TestCase
     /** @test */
     public function it_should_create_a_feed_class_that_is_registered_in_the_configuration_file()
     {
+        $expected = $this->laravelSimulatedReturn();
+
         config()->set('lw-rss-reader.active-rss', ['laravel-news']);
 
-        $feed = (new RssReader())->feed('laravel-news');
+        $rssReader = new RssReader($expected);
+        $feed = $rssReader->feed('laravel-news');
         $article = $feed->first();
 
         $this->assertNotNull($feed);
@@ -182,9 +188,11 @@ class RssReaderTest extends TestCase
     /** @test */
     public function it_should_pass_the_rss_feed_to_the_highest_instance_parameter()
     {
+        $expected = $this->laravelSimulatedReturn();
+
         config()->set('lw-rss-reader.active-rss', ['laravel-news']);
 
-        $feed = (new RssReader())->feed('laravel-news');
+        $feed = (new RssReader($expected))->feed('laravel-news');
 
         $this->assertNotNull($feed->getRssFeed());
         $this->assertEquals($feed->getRssFeed(), 'laravel-news');
@@ -193,9 +201,11 @@ class RssReaderTest extends TestCase
     /** @test */
     public function it_should_pass_the_root_feed_to_the_highest_instance_parameter()
     {
+        $expected = $this->laravelSimulatedReturn();
+
         config()->set('lw-rss-reader.active-rss', ['laravel-news']);
 
-        $feed = (new RssReader())->feed('laravel-news');
+        $feed = (new RssReader($expected))->feed('laravel-news');
         $rootFeed = $feed->all();
 
         $this->assertNotNull($rootFeed);
@@ -214,9 +224,11 @@ class RssReaderTest extends TestCase
     /** @test */
     public function it_should_pass_the_root_feed_articles_to_the_highest_instance_parameter()
     {
+        $expected = $this->laravelSimulatedReturn();
+
         config()->set('lw-rss-reader.active-rss', ['laravel-news']);
 
-        $feed = (new RssReader())->feed('laravel-news');
+        $feed = (new RssReader($expected))->feed('laravel-news');
         $feedArticles = $feed->get();
 
         $this->assertNotNull($feedArticles);
@@ -226,9 +238,10 @@ class RssReaderTest extends TestCase
     /** @test */
     public function it_should_pass_the_root_feed_articles_on_all_to_the_highest_instance_parameter()
     {
+        $expected = $this->laravelSimulatedReturn();
         config()->set('lw-rss-reader.active-rss', ['laravel-news']);
 
-        $feed = (new RssReader())->feed('laravel-news');
+        $feed = (new RssReader($expected))->feed('laravel-news');
         $feedArticles = $feed->all();
 
         $this->assertNotNull($feedArticles);
@@ -241,9 +254,11 @@ class RssReaderTest extends TestCase
     /** @test */
     public function it_should_return_the_same_instance_of_the_class()
     {
+        $expected = $this->laravelSimulatedReturn();
+
         config()->set('lw-rss-reader.active-rss', ['laravel-news']);
 
-        $feed = (new RssReader())->feed('laravel-news');
+        $feed = (new RssReader($expected))->feed('laravel-news');
 
         $this->assertNotNull($feed);
         $this->assertInstanceOf(RssReader::class, $feed);
@@ -262,6 +277,8 @@ class RssReaderTest extends TestCase
     /** @test */
     public function it_should_return_null_when_save_is_called_and_cache_is_set_to_false()
     {
+        $expected = $this->laravelSimulatedReturn();
+
         config()->set('lw-rss-reader.active-rss', ['laravel-news']);
         config()->set('lw-rss-reader.my-rss', [
             'laravel-news' => [
@@ -269,7 +286,7 @@ class RssReaderTest extends TestCase
             ]
         ]);
 
-        $feed = (new RssReader());
+        $feed = (new RssReader($expected));
         $class = $feed->getActiveFeed('laravel-news');
 
         $response = $feed->feed('laravel-news')->save();
@@ -282,6 +299,8 @@ class RssReaderTest extends TestCase
     /** @test */
     public function it_not_should_return_null_when_save_is_called_and_cache_is_set_to_true()
     {
+        $expected = $this->laravelSimulatedReturn();
+
         config()->set('lw-rss-reader.active-rss', ['laravel-news']);
         config()->set('lw-rss-reader.my-rss', [
             'laravel-news' => [
@@ -289,7 +308,7 @@ class RssReaderTest extends TestCase
             ]
         ]);
 
-        $feed = (new RssReader());
+        $feed = (new RssReader($expected));
         $class = $feed->getActiveFeed('laravel-news');
 
         $response =  $feed->feed('laravel-news')->save();
@@ -303,6 +322,8 @@ class RssReaderTest extends TestCase
     /** @test */
     public function it_should_save_the_feed_and_its_articles_in_the_database()
     {
+        $expected = $this->laravelSimulatedReturn();
+
         config()->set('lw-rss-reader.active-rss', ['laravel-news']);
         config()->set('lw-rss-reader.my-rss', [
             'laravel-news' => [
@@ -310,7 +331,7 @@ class RssReaderTest extends TestCase
             ]
         ]);
 
-        $feed = (new RssReader())->feed('laravel-news')->save();
+        $feed = (new RssReader($expected))->feed('laravel-news')->save();
 
         $this->assertNotNull($feed);
         $this->assertInstanceOf(RssReader::class, $feed);
